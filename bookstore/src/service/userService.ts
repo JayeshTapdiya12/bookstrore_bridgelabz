@@ -1,11 +1,11 @@
 import axios, { type AxiosResponse } from "axios";
 
-const baseUrl = "http://localhost:3001/api/v1/users";
+const baseUrl = "https://bookstore.incubation.bridgelabz.com/bookstore_user";
 
 interface loginRes {
-  token: string;
-  userId?: string;
-  password?: string;
+  success: string;
+  message: string;
+  result: { accessToken: string };
 }
 
 export const Login = async (
@@ -17,44 +17,48 @@ export const Login = async (
     password,
   };
   let res = await axios.post<loginRes>(`${baseUrl}/login`, data);
-  console.log(res);
+  if (res?.data?.success) {
+    localStorage.setItem("token", res?.data?.result?.accessToken);
+  }
   return res;
 };
 
 interface SignUpRequest {
-  name: string;
-  lname: string;
+  fullName: string;
+
   email: string;
   password: string;
-  mobile: number;
+  phone: string;
 }
 
-interface SignUpResponse extends SignUpRequest {
-  role: string;
-  createdAt: string;
-  updatedAt: string;
+interface SignUpResponse {
+  success: boolean;
+  message: string;
+  result: {
+    address: [];
+    isVerified: boolean;
+    _id: string;
+    fullName: string;
+    email: string;
+    password: string;
+    phone: string;
+    createdAt: string;
+    updatedAt: string;
+    __v: number;
+  };
 }
-
 export const Sign = async (
-  name: string,
-  lname: string,
+  fullName: string,
   email: string,
   password: string,
-  mobile: number,
-  user: boolean
+  phone: string
 ): Promise<AxiosResponse<SignUpResponse>> => {
   const data: SignUpRequest = {
-    name,
-    lname,
+    fullName,
     email,
     password,
-    mobile,
+    phone,
   };
-  if (user) {
-    let res = await axios.post<SignUpResponse>(`${baseUrl}/sign`, data);
-    return res;
-  } else {
-    let res = await axios.post<SignUpResponse>(`${baseUrl}/sign/admin`, data);
-    return res;
-  }
+  let res = await axios.post<SignUpResponse>(`${baseUrl}/registration`, data);
+  return res;
 };
