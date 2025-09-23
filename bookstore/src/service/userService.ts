@@ -17,9 +17,9 @@ export const Login = async (
     password,
   };
   let res = await axios.post<loginRes>(`${baseUrl}/login`, data);
-  if (res?.data?.success) {
-    localStorage.setItem("token", res?.data?.result?.accessToken);
-  }
+  //   if (res?.data?.success) {
+  //     localStorage.setItem("token", res?.data?.result?.accessToken);
+  //   }
   return res;
 };
 
