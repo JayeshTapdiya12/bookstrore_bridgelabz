@@ -1,11 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../style/login.css";
 import { useNavigate } from "react-router-dom";
-import { Login as loginService, Sign } from "../service/userService";
+// import { Login as loginService, Sign } from "../service/userService";
 import image from "../assets/2766594.png";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
+import { useDispatch, useSelector } from "react-redux";
+import { loginUser, signUser } from "../redux/slice/authSlice";
+import type { RootState, AppDispatch } from "../redux/store";
 
 interface CustomTabPanelProps {
   children?: React.ReactNode;
@@ -40,14 +43,17 @@ function a11yProps(index: number) {
 }
 
 const Login: React.FC = () => {
+  const dispatch = useDispatch<AppDispatch>();
+  const { user, token, loading, error } = useSelector(
+    (state: RootState) => state.auth
+  );
+
   const [tabValue, setTabValue] = useState(0);
   const navigate = useNavigate();
 
-  // 🔹 State for Login
-  const [loginEmail, setLoginEmail] = useState("");
-  const [loginPassword, setLoginPassword] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-  // 🔹 State for Signup
   const [fullName, setFullName] = useState("");
   const [signupEmail, setSignupEmail] = useState("");
   const [signupPassword, setSignupPassword] = useState("");
@@ -57,39 +63,37 @@ const Login: React.FC = () => {
     setTabValue(newValue);
   };
 
-  // 🔹 Login handler
+  useEffect(() => {
+    if (token) {
+      navigate("/");
+    }
+  }, [token, navigate]);
+
+  //  Login handler
   const sendLogin = async () => {
-    if (!loginEmail || !loginPassword) {
-      alert("Please enter both email and password");
-      return;
-    }
-    try {
-      const res = await loginService(loginEmail, loginPassword);
-      //   console.log("Login response:", res.data);
-      navigate("/"); // redirect after login
-    } catch (error) {
-      console.error("Login failed:", error);
-      alert("Login failed. Please check your credentials.");
-    }
+    dispatch(loginUser({ email, password }));
   };
 
-  // 🔹 Signup handler
+  //  Signup handler
   const sendSign = async () => {
-    if (!fullName || !signupEmail || !signupPassword || !phone) {
-      alert("Please enter all signup details.");
-      return;
-    }
-    try {
-      const res = await Sign(fullName, signupEmail, signupPassword, phone);
-      console.log("Signup response:", res.data);
-      alert(res.data.message);
-      navigate("/login");
-    } catch (error) {
-      console.error("Signup failed:", error);
-      alert("Signup failed. Please try again.");
-    }
+    dispatch(
+      signUser({
+        fullName,
+        email: signupEmail,
+        password: signupPassword,
+        phone,
+      })
+    );
   };
-
+  useEffect(() => {
+    if (user && tabValue === 1) {
+      setTabValue(0);
+      setFullName("");
+      setSignupEmail("");
+      setSignupPassword("");
+      setPhone("");
+    }
+  }, [user, tabValue]);
   return (
     <Box sx={{ width: "100%" }}>
       {/* Tabs for switching */}
@@ -113,8 +117,9 @@ const Login: React.FC = () => {
                   value={tabValue}
                   onChange={handleTabChange}
                   aria-label="login-signup-tabs"
+                  className="active-tab"
                 >
-                  <Tab label="Login" className="active-tab" {...a11yProps(0)} />
+                  <Tab className="active-tab" label="Login" {...a11yProps(0)} />
                   <Tab
                     label="Sign Up"
                     className="inactive-tab"
@@ -126,8 +131,8 @@ const Login: React.FC = () => {
                   <input
                     type="email"
                     placeholder="Enter your email"
-                    value={loginEmail}
-                    onChange={(e) => setLoginEmail(e.target.value)}
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                   />
                 </div>
                 <div className="input-group">
@@ -135,8 +140,8 @@ const Login: React.FC = () => {
                   <input
                     type="password"
                     placeholder="Enter your password"
-                    value={loginPassword}
-                    onChange={(e) => setLoginPassword(e.target.value)}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
                   />
                 </div>
                 <div className="forgot-password">
