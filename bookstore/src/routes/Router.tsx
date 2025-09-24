@@ -5,6 +5,8 @@ import Dashboard from "../pages/Dashboard";
 import { AuthRoute } from "./authRouts";
 import { ProtectedRoute } from "./protectedRoute";
 import SinglePageBook from "../pages/SinglePageBook";
+import Cart from "../pages/Cart";
+import Home from "../pages/Home";
 const Router: React.FC = () => {
   return (
     <>
@@ -17,26 +19,18 @@ const Router: React.FC = () => {
                 <Dashboard />
               </ProtectedRoute>
             }
-          />
-
-          <Route
-            path="/book/:id"
-            element={
-              <ProtectedRoute>
-                <SinglePageBook />
-              </ProtectedRoute>
-            }
-          />
-          {/* <Route
-            path="/"
-            element={
-              <ProtectedRoute>
-                <Dashboard />
-              </ProtectedRoute>
-            }
           >
+            <Route path="/" element={<Home />} />
             <Route path="book/:id" element={<SinglePageBook />} />
-          </Route> */}
+            <Route
+              path="cart"
+              element={
+                <ProtectedRoute>
+                  <Cart />
+                </ProtectedRoute>
+              }
+            />
+          </Route>
           <Route
             path="/login"
             element={
