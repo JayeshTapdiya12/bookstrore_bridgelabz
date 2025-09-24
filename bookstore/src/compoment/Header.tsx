@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import "../Style/Header.css";
 import { styled, alpha } from "@mui/material/styles";
 import AppBar from "@mui/material/AppBar";
@@ -16,6 +16,8 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import logo from "../assets/education.png";
 import { Link, NavLink, useNavigate } from "react-router-dom";
+
+import { QuntContext } from "../pages/Dashboard";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -63,6 +65,9 @@ const CustomSearchIcon = styled(SearchIcon)(({ theme }) => ({
 }));
 
 const Header: React.FC = () => {
+  const { cartNumber } = useContext(QuntContext);
+  console.log(cartNumber);
+
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
     useState<null | HTMLElement>(null);
@@ -142,7 +147,7 @@ const Header: React.FC = () => {
           color="inherit"
           style={{ display: "flex", flexDirection: "column" }}
         >
-          <Badge badgeContent={"2"} color="error">
+          <Badge badgeContent={cartNumber} color="error">
             <ShoppingCartIcon />
           </Badge>
           <span style={{ fontSize: "15px", marginTop: "10px" }}>Cart</span>
@@ -224,7 +229,7 @@ const Header: React.FC = () => {
                   color="inherit"
                   style={{ display: "flex", flexDirection: "column" }}
                 >
-                  <Badge badgeContent={"2"} color="error">
+                  <Badge badgeContent={cartNumber} color="error">
                     <ShoppingCartIcon />
                   </Badge>
                   <span style={{ fontSize: "15px", marginTop: "10px" }}>
