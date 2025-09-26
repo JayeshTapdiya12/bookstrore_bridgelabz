@@ -26,11 +26,8 @@ const Search = styled("div")(({ theme }) => ({
   "&:hover": {
     backgroundColor: alpha(theme.palette.common.white, 0.25),
   },
-  marginRight: theme.spacing(2),
-  marginLeft: 0,
   width: "100%",
   [theme.breakpoints.up("sm")]: {
-    marginLeft: theme.spacing(3),
     width: "auto",
   },
 }));
@@ -52,21 +49,20 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     transition: theme.transitions.create("width"),
     width: "100%",
     [theme.breakpoints.up("sm")]: {
-      width: "25ch",
+      width: "500px",
     },
-    [theme.breakpoints.down("xs")]: {
-      width: "15ch",
+    [theme.breakpoints.down("sm")]: {
+      width: "180px",
     },
   },
 }));
 
-const CustomSearchIcon = styled(SearchIcon)(({ theme }) => ({
+const CustomSearchIcon = styled(SearchIcon)(() => ({
   color: "grey",
 }));
 
 const Header: React.FC = () => {
   const { cartNumber } = useContext(QuntContext);
-  console.log(cartNumber);
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
@@ -103,22 +99,18 @@ const Header: React.FC = () => {
   const renderMenu = (
     <Menu
       anchorEl={anchorEl}
-      anchorOrigin={{
-        vertical: "top",
-        horizontal: "right",
-      }}
+      anchorOrigin={{ vertical: "top", horizontal: "right" }}
       id={menuId}
       keepMounted
-      transformOrigin={{
-        vertical: "top",
-        horizontal: "right",
-      }}
+      transformOrigin={{ vertical: "top", horizontal: "right" }}
       open={isMenuOpen}
       onClose={handleMenuClose}
-      style={{ marginLeft: "5vw", marginTop: "1.5vw" }}
+      sx={{ mt: 2 }}
     >
       <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      <Link to={"/wishlist"} style={{ textDecoration: "none", color: "black" }}>
+        <MenuItem onClick={handleMenuClose}>Wishlist</MenuItem>
+      </Link>
       <MenuItem onClick={logout}>Logout</MenuItem>
     </Menu>
   );
@@ -127,41 +119,24 @@ const Header: React.FC = () => {
   const renderMobileMenu = (
     <Menu
       anchorEl={mobileMoreAnchorEl}
-      anchorOrigin={{
-        vertical: "top",
-        horizontal: "right",
-      }}
+      anchorOrigin={{ vertical: "top", horizontal: "right" }}
       id={mobileMenuId}
       keepMounted
-      transformOrigin={{
-        vertical: "top",
-        horizontal: "right",
-      }}
+      transformOrigin={{ vertical: "top", horizontal: "right" }}
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
       <MenuItem>
-        <IconButton
-          size="large"
-          aria-label="show 4 new mails"
-          color="inherit"
-          style={{ display: "flex", flexDirection: "column" }}
-        >
+        <IconButton size="large" color="inherit">
           <Badge badgeContent={cartNumber} color="error">
             <ShoppingCartIcon />
           </Badge>
-          <span style={{ fontSize: "15px", marginTop: "10px" }}>Cart</span>
         </IconButton>
+        <p>Cart</p>
       </MenuItem>
 
       <MenuItem onClick={handleProfileMenuOpen}>
-        <IconButton
-          size="large"
-          aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
-        >
+        <IconButton size="large" color="inherit">
           <AccountCircle />
         </IconButton>
         <p>Profile</p>
@@ -170,113 +145,108 @@ const Header: React.FC = () => {
   );
 
   return (
-    <>
-      <Box sx={{ flexGrow: 1 }}>
-        <AppBar position="static" style={{ backgroundColor: "#A03037" }}>
-          <Toolbar className="header">
-            <Typography
-              variant="h6"
-              noWrap
-              component="div"
-              sx={{
-                display: { xs: "block", sm: "block" },
-                flexGrow: 1,
+    <Box sx={{ flexGrow: 1 }}>
+      <AppBar position="static" sx={{ backgroundColor: "#A03037" }}>
+        <Toolbar className="header" sx={{ justifyContent: "space-between" }}>
+          <Box sx={{ display: "flex", alignItems: "center", flexGrow: 1 }}>
+            <Link
+              to={"/"}
+              style={{
+                textDecoration: "none",
+                color: "white",
+                display: "flex",
+                alignItems: "center",
               }}
             >
-              <Link to={"/"} style={{ textDecoration: "none", color: "white" }}>
-                <img
-                  src={logo}
-                  alt="logo"
-                  height={"27px"}
-                  style={{ marginTop: "10px", marginRight: "10px" }}
-                />
-                BookStore
-              </Link>
-            </Typography>
-
-            <Box
-              sx={{
-                display: { xs: "flex", sm: "flex" },
-                flexGrow: 1,
-                justifyContent: "center",
-              }}
-            >
-              <Search>
-                <SearchIconWrapper>
-                  <CustomSearchIcon />
-                </SearchIconWrapper>
-                <StyledInputBase
-                  placeholder="Search…"
-                  inputProps={{ "aria-label": "search" }}
-                  style={{
-                    backgroundColor: "white",
-                    color: "grey",
-                  }}
-                />
-              </Search>
-            </Box>
-
-            <Box
-              sx={{ display: { xs: "none", sm: "flex" }, alignItems: "center" }}
-            >
-              <NavLink
-                to={"/cart"}
-                style={{ textDecoration: "none", color: "white" }}
+              <img
+                src={logo}
+                alt="logo"
+                height={"27px"}
+                style={{ marginTop: "5px", marginRight: "10px" }}
+              />
+              <Typography
+                variant="h6"
+                noWrap
+                component="div"
+                sx={{ display: { xs: "none", sm: "block" } }}
               >
-                <IconButton
-                  size="large"
-                  aria-label="show 4 new mails"
-                  color="inherit"
-                  style={{ display: "flex", flexDirection: "column" }}
-                >
-                  <Badge badgeContent={cartNumber} color="error">
-                    <ShoppingCartIcon />
-                  </Badge>
-                  <span style={{ fontSize: "15px", marginTop: "10px" }}>
-                    Cart
-                  </span>
-                </IconButton>
-              </NavLink>
+                BookStore
+              </Typography>
+            </Link>
 
+            <Search sx={{ marginLeft: "20px" }}>
+              <SearchIconWrapper>
+                <CustomSearchIcon />
+              </SearchIconWrapper>
+              <StyledInputBase
+                placeholder="Search…"
+                inputProps={{ "aria-label": "search" }}
+                style={{
+                  backgroundColor: "white",
+                  color: "grey",
+                }}
+              />
+            </Search>
+          </Box>
+
+          <Box
+            sx={{ display: { xs: "none", sm: "flex" }, alignItems: "center" }}
+          >
+            <NavLink
+              to={"/cart"}
+              style={{ textDecoration: "none", color: "white" }}
+            >
               <IconButton
                 size="large"
-                edge="end"
-                aria-label="account of current user"
-                aria-controls={menuId}
-                aria-haspopup="true"
-                onClick={handleProfileMenuOpen}
                 color="inherit"
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  marginRight: "20px",
-                }}
+                style={{ display: "flex", flexDirection: "column" }}
               >
-                <AccountCircle />
+                <Badge badgeContent={cartNumber} color="error">
+                  <ShoppingCartIcon />
+                </Badge>
                 <span style={{ fontSize: "15px", marginTop: "10px" }}>
-                  Profile
+                  Cart
                 </span>
               </IconButton>
-            </Box>
+            </NavLink>
 
-            <Box sx={{ display: { xs: "flex", sm: "none" } }}>
-              <IconButton
-                size="large"
-                aria-label="show more"
-                aria-controls={mobileMenuId}
-                aria-haspopup="true"
-                onClick={handleMobileMenuOpen}
-                color="inherit"
-              >
-                <MoreIcon />
-              </IconButton>
-            </Box>
-          </Toolbar>
-        </AppBar>
-        {renderMobileMenu}
-        {renderMenu}
-      </Box>
-    </>
+            <IconButton
+              size="large"
+              edge="end"
+              aria-controls={menuId}
+              aria-haspopup="true"
+              onClick={handleProfileMenuOpen}
+              color="inherit"
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                marginRight: "20px",
+              }}
+            >
+              <AccountCircle />
+              <span style={{ fontSize: "15px", marginTop: "10px" }}>
+                Profile
+              </span>
+            </IconButton>
+          </Box>
+
+          <Box sx={{ display: { xs: "flex", sm: "none" } }}>
+            <IconButton
+              size="large"
+              aria-label="show more"
+              aria-controls={mobileMenuId}
+              aria-haspopup="true"
+              onClick={handleMobileMenuOpen}
+              color="inherit"
+            >
+              <MoreIcon />
+            </IconButton>
+          </Box>
+        </Toolbar>
+      </AppBar>
+      {renderMobileMenu}
+      {renderMenu}
+    </Box>
   );
 };
 
