@@ -7,6 +7,8 @@ import { ProtectedRoute } from "./protectedRoute";
 import SinglePageBook from "../pages/SinglePageBook";
 import Cart from "../pages/Cart";
 import Home from "../pages/Home";
+import Order from "../pages/Order";
+import Wishlist from "../pages/Wishlist";
 const Router: React.FC = () => {
   return (
     <>
@@ -30,6 +32,8 @@ const Router: React.FC = () => {
                 </ProtectedRoute>
               }
             />
+            <Route path="/order" element={<Order />} />
+            <Route path="/wishlist" element={<Wishlist />} />
           </Route>
           <Route
             path="/login"
