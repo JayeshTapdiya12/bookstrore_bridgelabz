@@ -50,6 +50,8 @@ const Login: React.FC = () => {
   const [password, setPassword] = useState("");
 
   const [fullName, setFullName] = useState("");
+  const [lastname, setLastname] = useState("");
+
   const [signupEmail, setSignupEmail] = useState("");
   const [signupPassword, setSignupPassword] = useState("");
   const [phone, setPhone] = useState("");
@@ -76,13 +78,14 @@ const Login: React.FC = () => {
 
   //  Signup handler
   const sendSign = async () => {
-    if (!fullName || !signupEmail || !signupPassword || !phone) {
+    if (!fullName || !lastname || !signupEmail || !signupPassword || !phone) {
       alert("Please enter all signup details.");
       return;
     }
     try {
       const res = await signService(
         fullName,
+        lastname,
         signupEmail,
         signupPassword,
         phone
@@ -200,12 +203,21 @@ const Login: React.FC = () => {
                     />
                   </Tabs>
                   <div className="input-group">
-                    <label>Full Name</label>
+                    <label>first Name</label>
                     <input
                       type="text"
                       placeholder="Enter full name"
                       value={fullName}
                       onChange={(e) => setFullName(e.target.value)}
+                    />
+                  </div>
+                  <div className="input-group">
+                    <label>last Name</label>
+                    <input
+                      type="text"
+                      placeholder="Enter full name"
+                      value={lastname}
+                      onChange={(e) => setLastname(e.target.value)}
                     />
                   </div>
                   <div className="input-group">
