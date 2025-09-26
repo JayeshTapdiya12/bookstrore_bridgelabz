@@ -1,0 +1,152 @@
+.cart-container {
+  max-width: 1100px;
+  background-color: white;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  /* margin: auto; */
+  margin-top: 2vw;
+  margin-left: 15vw;
+}
+
+.cart-container h2 {
+  margin-bottom: 20px;
+}
+
+.cart-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid #ddd;
+}
+
+.book-image {
+  width: 100px;
+  height: auto;
+  border-radius: 5px;
+  margin-right: 20px;
+}
+
+.cart-details {
+  flex: 1;
+}
+
+.cart-details h3 {
+  font-size: 18px;
+  margin-bottom: 5px;
+}
+
+.cart-details p {
+  color: grey;
+  margin-bottom: 10px;
+}
+
+.cart-price {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.cart-price span {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.cart-original-price {
+  text-decoration: line-through;
+  color: grey;
+  margin-left: 10px;
+}
+
+.cart-quantity {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.cart-quantity button {
+  width: 30px;
+  height: 30px;
+  background-color: #eee;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.cart-quantity input {
+  width: 40px;
+  text-align: center;
+  border: 1px solid #ddd;
+  margin: 0 5px;
+  padding: 5px;
+}
+
+.remove-btn {
+  color: red;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.cart-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.cart-address {
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+}
+
+.cart-address i {
+  color: red;
+  margin-right: 5px;
+}
+
+.place-order-btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .cart-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .book-image {
+    width: 80px;
+    margin-bottom: 10px;
+  }
+
+  .cart-actions {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .place-order-btn {
+    width: 100%;
+    margin-top: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .cart-container {
+    padding: 15px;
+  }
+
+  .book-image {
+    width: 70px;
+  }
+}
