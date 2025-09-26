@@ -46,7 +46,7 @@ const Cart: React.FC = () => {
 
   const [totalPrice, setTotalPrice] = useState<number>(0);
   const { refreshCart } = useContext(QuntContext);
-
+  const [buttonPlace, setButtonPlace] = useState<boolean>(true);
   const navigate = useNavigate();
 
   const cartGet = async () => {
@@ -67,31 +67,28 @@ const Cart: React.FC = () => {
   useEffect(() => {
     cartGet();
   }, []);
-
   const handleQuantityChange = async (
     bookId: string,
     action: "increment" | "decrement"
   ) => {
-    setCart((prevCart) =>
-      prevCart.map((book) => {
-        if (book._id === bookId) {
-          if (action === "increment") {
-            updateQuantityService(bookId);
-          } else if (action === "decrement") {
-            RemoveCartService(bookId);
-          }
-          cartGet();
-          refreshCart();
-        }
-        return book;
-      })
-    );
+    try {
+      if (action === "increment") {
+        await updateQuantityService(bookId);
+      } else {
+        await RemoveCartService(bookId);
+      }
+      await cartGet();
+      refreshCart();
+    } catch (error) {
+      console.error("Error updating quantity:", error);
+    }
   };
-
   const checkout = async () => {
-    const res = await AddOrderService();
-    console.log(res);
-    navigate("/order");
+    if (cart?.length !== 0) {
+      const res = await AddOrderService();
+      console.log(res);
+      navigate("/order");
+    }
   };
 
   return (
@@ -150,54 +147,89 @@ const Cart: React.FC = () => {
             </div>
           ))
         )}
-        <div className="cart-price">
-          <h4>
-            Total Cart Price : <span>Rs. {totalPrice}</span>
-          </h4>
-        </div>
+        {cart?.length !== 0 ? (
+          <>
+            <div className="cart-price">
+              <h4>
+                Total Cart Price : <span>Rs. {totalPrice}</span>
+              </h4>
+            </div>
+
+            <div style={{ display: "flex", flexDirection: "column" }}>
+              {isOpen2 || isOpen ? null : (
+                <Button
+                  variant="contained"
+                  color="primary"
+                  sx={{ marginLeft: "auto", marginTop: "20px" }}
+                  onClick={checkout}
+                >
+                  PlaceOrder
+                </Button>
+              )}
+            </div>
+          </>
+        ) : null}
       </div>
 
       {/* address details */}
+      {cart.length !== 0 ? (
+        <>
+          <div onClick={() => setIsOpen(!isOpen)} className="cart-container">
+            {isOpen ? "Address Details" : "Address Details"}
+          </div>
 
-      <div onClick={() => setIsOpen(!isOpen)} className="cart-container">
-        {isOpen ? "Address Details" : "Address Details"}
-      </div>
+          {isOpen && <AddressForm />}
+          <div
+            onClick={() => setIsOpen2(!isOpen2)}
+            className="cart-container"
+            style={{ display: "flex", flexDirection: "column" }}
+          >
+            {isOpen2 ? "Close Order Details" : "Order Details"}
+            {isOpen2 && cart?.length === 0 && (
+              <>
+                {cart.map((ele) => (
+                  <div
+                    key={ele._id}
+                    className="cart-item"
+                    style={{ display: "flex", alignItems: "center" }}
+                  >
+                    <img
+                      src={!ele.bookImage ? bookImmg : ele.bookImage}
+                      alt={ele.bookName || "Book Image"}
+                      className="book-image"
+                      style={{ maxWidth: "50px", marginRight: "10px" }}
+                    />
+                    <div className="cart-details">
+                      <h3>Book Name: {ele.bookName}</h3>
+                      <p>Author: {ele.author}</p>
 
-      {isOpen && <AddressForm />}
+                      <div className="cart-price">
+                        <span>Rs. {ele.discountPrice}</span>
+                        <span className="cart-original-price">
+                          Rs. {ele.price}
+                        </span>
+                      </div>
 
-      <div onClick={() => setIsOpen2(!isOpen2)} className="cart-container">
-        {isOpen2 ? "Close Order Details" : "Order Details"}
-        {isOpen2 && (
-          <>
-            {cart.map((ele) => (
-              <div key={ele._id} className="cart-item">
-                <img
-                  src={!ele.bookImage ? bookImmg : ele.bookImage}
-                  alt={ele.bookName || "Book Image"}
-                  className="book-image"
-                />
-                <div className="cart-details">
-                  <h3>Book Name: {ele.bookName}</h3>
-                  <p>Author: {ele.author}</p>
-
-                  <div className="cart-price">
-                    <span>Rs. {ele.discountPrice}</span>
-                    <span className="cart-original-price">Rs. {ele.price}</span>
+                      <div className="cart-price">
+                        Total item price:{" "}
+                        <span>Rs. {ele.discountPrice * ele.quantity}</span>
+                      </div>
+                    </div>
                   </div>
-
-                  <div className="cart-price">
-                    Total item price:{" "}
-                    <span>Rs. {ele.discountPrice * ele.quantity}</span>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </>
-        )}
-        <Button variant="contained" color="primary" onClick={checkout}>
-          checkout
-        </Button>
-      </div>
+                ))}
+                <Button
+                  variant="contained"
+                  color="primary"
+                  sx={{ marginLeft: "auto", marginTop: "20px" }}
+                  onClick={checkout}
+                >
+                  Checkout
+                </Button>
+              </>
+            )}
+          </div>
+        </>
+      ) : null}
     </>
   );
 };
