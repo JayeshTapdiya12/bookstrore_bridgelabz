@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import { useParams } from "react-router-dom";
-import Header from "../compoment/Header";
-import { getBook as getBookService } from "../service/bookSerivce";
+import { getBookById } from "../service/bookSerivce";
 import {
   Container,
   Grid,
@@ -18,9 +17,10 @@ import {
   addCart as addCartService,
   getCart as getCartService,
 } from "../service/cartService";
-
-// import Button from "@mui/material/Button";
-import SaveIcon from "@mui/icons-material/Save";
+import {
+  addWishlist as addWishService,
+  getWishList as getWishService,
+} from "../service/wishlistService";
 import Stack from "@mui/material/Stack";
 import { CircularProgress } from "@mui/material";
 import { QuntContext } from "../pages/Dashboard";
@@ -91,24 +91,32 @@ const SinglePageBook: React.FC = () => {
   const [bookId, setBookId] = useState<Book | null>(null);
   const [existb, setExistb] = useState<Book | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
-
-  const { cartNumber, refreshCart } = useContext(QuntContext);
+  const [wish, setWish] = useState<string | null>(null);
+  const { refreshCart } = useContext(QuntContext);
 
   const getBook = async () => {
     try {
-      const res = await getBookService();
-      const resp = res?.data?.result;
+      if (!id) return;
+      const res = await getBookById(id);
+      setBookId(res?.data?.note);
+      console.log("Book API response:", res);
 
-      const data = Array.isArray(resp)
-        ? resp.find((c: any) => c._id === id)
-        : null;
+      const cartRes = await getCartService();
+      console.log("Cart API response:", cartRes);
 
-      if (data) {
-        setBookId(data);
-        setLoading(false);
-      }
+      const cartBooks = cartRes?.data?.data?.book || [];
+      console.log("Cart Books:", cartBooks);
+      console.log("Current Book Id:", id);
+
+      const found = cartBooks.find((b: any) => b?._id === id);
+
+      console.log("Found in cart:", found);
+
+      if (found) setExistb(found);
+      setLoading(false);
     } catch (error) {
       console.log(error);
+      setLoading(false);
     }
   };
 
@@ -116,45 +124,66 @@ const SinglePageBook: React.FC = () => {
     try {
       if (!id) return;
       const res = await addCartService(id);
-      console.log(res);
-      // Ideally fetch cart again
+      console.log("Add Cart response:", res);
+
       const cartRes = await getCartService();
       refreshCart();
-      const cartBooks = cartRes?.data?.result || [];
-      const found = cartBooks.find((b: any) => b.product_id?._id === id);
-      if (found) setExistb(found.product_id);
+      const cartBooks = cartRes?.data?.data?.book || [];
+
+      const found = cartBooks.find(
+        (b: any) => b?._id?.toString() === id?.toString()
+      );
+
+      if (found) setExistb(found);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const addwish = async () => {
+    try {
+      console.log("innnnnnnnnnnnnnnnwishhshshshsh");
+      if (!id) return;
+      const res = await addWishService(id);
+      console.log(res);
+      // const wishres = await getWishService();
+      // const wishBook = wishres?.data?.wishlist?.book || [];
+
+      // const found = wishBook.find(
+      //   (b: any) => b?.bookId?.toString() === id?.toString()
+      // );
+      // if (found) {
+      //   setWish(found);
+      // } else {
+      //   setWish(null);
+      // }
     } catch (error) {
       console.log(error);
     }
   };
 
-  // has to add the wishlist functionlity
-  // const addwishlist = async () => {
-  //   try {
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-
   useEffect(() => {
     getBook();
+    setWish(null);
   }, [id]);
 
   return (
     <>
-      {/* <Header /> */}
       {loading ? (
         <Stack spacing={2}>
           <Stack direction="row" spacing={0}>
             <Button variant="outlined" disabled>
-              <CircularProgress size={24} /> {/* Show loader */}
+              <CircularProgress size={24} />
             </Button>
           </Stack>
         </Stack>
       ) : (
         <Container maxWidth="lg" sx={{ paddingTop: "2rem" }}>
+          <h2 style={{ color: "grey" }}>
+            Home/
+            <span style={{ color: "black", fontSize: "15px" }}> ( Book)</span>
+          </h2>
           <Grid container spacing={2}>
-            {/* LEFT SIDE: IMAGE + BUTTONS */}
+            {/* left side fornf button adn img */}
             <Grid item xs={12} md={4}>
               {bookId && (
                 <Card sx={{ boxShadow: 3 }}>
@@ -168,9 +197,9 @@ const SinglePageBook: React.FC = () => {
                     <Grid container spacing={1}>
                       <Grid item xs={6}>
                         {existb?._id === bookId._id ? (
-                          <Typography variant="body2">
+                          <AddToBagButton variant="contained">
                             Already in Bag
-                          </Typography>
+                          </AddToBagButton>
                         ) : (
                           <AddToBagButton variant="contained" onClick={adding}>
                             ADD TO BAG
@@ -178,10 +207,15 @@ const SinglePageBook: React.FC = () => {
                         )}
                       </Grid>
                       <Grid item xs={6}>
-                        {/* add a wishlist button  onClick={addwishlist}*/}
-                        <WishlistButton variant="contained">
-                          WISHLIST
-                        </WishlistButton>
+                        {wish?._id === bookId?._id ? (
+                          <AddToBagButton variant="contained">
+                            Already in wishlist
+                          </AddToBagButton>
+                        ) : (
+                          <WishlistButton variant="contained" onClick={addwish}>
+                            WISHLIST
+                          </WishlistButton>
+                        )}
                       </Grid>
                     </Grid>
                   </CardContent>
@@ -189,7 +223,7 @@ const SinglePageBook: React.FC = () => {
               )}
             </Grid>
 
-            {/* RIGHT SIDE: DETAILS */}
+            {/* right sde: DETAILS */}
             <Grid item xs={12} md={8}>
               {bookId && (
                 <>
@@ -231,7 +265,6 @@ const SinglePageBook: React.FC = () => {
                     {bookId.description}
                   </BookDetail>
 
-                  {/* Customer Feedback Section */}
                   <CustomerFeedback>
                     <Typography variant="h6">Customer Feedback</Typography>
                     <Typography variant="body2" color="textSecondary">
