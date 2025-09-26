@@ -115,7 +115,7 @@ const Home: React.FC = () => {
                     <Card sx={{ height: "100%", boxShadow: 3 }}>
                       <CardMedia
                         component="img"
-                        height="200"
+                        height="auto"
                         src={book.bookImage ? book.bookImage : Bookimg}
                         alt={book.bookName}
                         style={{}}
