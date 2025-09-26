@@ -26,14 +26,16 @@ const Dashboard: React.FC = () => {
 
   const cartGet = async () => {
     const res = await getCartService();
-    const bookcart = res?.data?.result;
+    console.log(res);
+    const bookcart = res?.data?.data?.book;
+    console.log("heelo");
     console.log(bookcart);
-    if (Array.isArray(bookcart)) {
-      // bookcart.
-      setCartNumber(bookcart.length);
-    } else {
-      setCartNumber(0); // or handle error
+    let number = 0;
+    if (bookcart.length !== 0) {
+      number = bookcart.reduce((total, book) => total + book.quantity, 0);
     }
+
+    setCartNumber(number);
   };
   console.log(cartNumber);
   useEffect(() => {
