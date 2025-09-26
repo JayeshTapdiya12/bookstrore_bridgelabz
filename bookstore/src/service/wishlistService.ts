@@ -1,53 +1,92 @@
 import axios, { type AxiosResponse } from "axios";
 
-const baseUrl = "https://bookstore.incubation.bridgelabz.com/bookstore_user";
+const baseUrl = "http://localhost:3001/api/v1/books/wishlist";
 
-// addd wishlist -add_wish_list/66d55482d84c6c000e3b369e
+const token = localStorage.getItem("token");
+const headers = { headers: { Authorization: "bearer " + token } };
 
-// {
-//   "success": true,
-//   "message": "Item added to wish list",
-//   "result": {
-//     "product_id": "66d55482d84c6c000e3b369e",
-//     "_id": "68d2c7f956bee9000eba9336",
-//     "user_id": "68d11db8b9bfd1000e248cc0",
-//     "createdAt": "2025-09-23T16:16:57.984Z",
-//     "updatedAt": "2025-09-23T16:16:57.984Z",
-//     "__v": 0
-//   }
-// }
+interface GetWishList {
+  message: string;
+  wishlist: {
+    _id: string;
+    wishBy: string;
+    book: [
+      {
+        _id: string;
+        bookId: string;
+        bookname: string;
+        authorname: string;
+        image: string;
+      }
+    ];
+    createdAt: string;
+    updatedAt: string;
+    __v: number;
+  };
+}
 
-// get wishlist  -get_wishlist_items
+export const getWishList = async (): Promise<AxiosResponse<GetWishList>> => {
+  let res = await axios.get(`${baseUrl}/get`, headers);
+  console.log(res);
+  return res;
+};
 
-// {
-//   "success": true,
-//   "message": "Sucessfully fetched all wish list items",
-//   "result": [
-//     {
-//       "product_id": {
-//         "description": "Nothingg",
-//         "discountPrice": 200,
-//         "bookImage": null,
-//         "_id": "66d55482d84c6c000e3b369e",
-//         "bookName": "Moonlight",
-//         "author": "Sunburn",
-//         "quantity": 4,
-//         "price": 300,
-//         "createdAt": "2024-09-02T06:00:34.547Z",
-//         "updatedAt": "2024-09-02T06:00:34.547Z",
-//         "__v": 0
-//       },
-//       "_id": "68d2c7f956bee9000eba9336",
-//       "user_id": "68d11db8b9bfd1000e248cc0",
-//       "createdAt": "2025-09-23T16:16:57.984Z",
-//       "updatedAt": "2025-09-23T16:16:57.984Z",
-//       "__v": 0
-//     }
-//   ]
-// }
+interface AddWishlist {
+  message: string;
+  wish: {
+    message: string;
+    wishlist: {
+      _id: string;
+      wishBy: string;
+      book: [
+        {
+          _id: string;
+          bookId: string;
+          bookname: string;
+          authorname: string;
+          image: string;
+        }
+      ];
+      createdAt: string;
+      updatedAt: string;
+      __v: number;
+    };
+  };
+}
 
-// remove wishlist - remove_wishlist_item/66d55482d84c6c000e3b369e
-// {
-//   "success": true,
-//   "message": "Product removed from wish list sucessfully"
-// }
+export const addWishlist = async (
+  id: string
+): Promise<AxiosResponse<AddWishlist>> => {
+  let res = await axios.post(`${baseUrl}/add/${id}`, {}, headers);
+  console.log(res);
+  return res;
+};
+
+interface RemoveWishlist {
+  code: number;
+  message: string;
+  wishlist: null | {
+    _id: string;
+    wishBy: string;
+    book: [
+      {
+        _id: string;
+        bookId: string;
+        bookname: string;
+        authorname: string;
+        image: string;
+      }
+    ];
+    createdAt: string;
+    updatedAt: string;
+    __v: number;
+  };
+}
+
+export const removeWishlist = async (
+  id: string
+): Promise<AxiosResponse<RemoveWishlist>> => {
+  let res = await axios.post(`${baseUrl}/remove/${id}`, {}, headers);
+  console.log(res);
+  return res;
+};
