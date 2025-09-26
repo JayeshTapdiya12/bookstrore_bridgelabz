@@ -24,6 +24,8 @@ import {
 import Stack from "@mui/material/Stack";
 import { CircularProgress } from "@mui/material";
 import { QuntContext } from "../pages/Dashboard";
+import "../style/single.css";
+import BookImage from "../assets/Bookimg2.png";
 
 interface Book {
   _id: string;
@@ -177,20 +179,21 @@ const SinglePageBook: React.FC = () => {
           </Stack>
         </Stack>
       ) : (
-        <Container maxWidth="lg" sx={{ paddingTop: "2rem" }}>
+        <Container maxWidth="lg" sx={{ paddingLeft: "10rem" }}>
           <h2 style={{ color: "grey" }}>
             Home/
             <span style={{ color: "black", fontSize: "15px" }}> ( Book)</span>
           </h2>
-          <Grid container spacing={2}>
+          <Grid container spacing={5}>
             {/* left side fornf button adn img */}
             <Grid item xs={12} md={4}>
               {bookId && (
                 <Card sx={{ boxShadow: 3 }}>
                   <CardMedia
                     component="img"
-                    height="400"
-                    image={bookId.bookImage}
+                    height="500"
+                    width={"500"}
+                    image={bookId.bookImage ? bookId.bookImage : BookImage}
                     alt={bookId.bookName}
                   />
                   <CardContent>
@@ -224,14 +227,14 @@ const SinglePageBook: React.FC = () => {
             </Grid>
 
             {/* right sde: DETAILS */}
-            <Grid item xs={12} md={8}>
+            <Grid item xs={12} md={8} width={500}>
               {bookId && (
                 <>
-                  <Typography variant="h5" gutterBottom>
+                  <Typography variant="h4" gutterBottom>
                     {bookId.bookName}
                   </Typography>
 
-                  <Typography variant="body1" color="textSecondary">
+                  <Typography variant="h6" color="textSecondary">
                     by {bookId.author}
                   </Typography>
 
@@ -240,34 +243,36 @@ const SinglePageBook: React.FC = () => {
                       sx={{
                         backgroundColor: "#4caf50",
                         color: "#ffffff",
-                        fontSize: "12px",
+                        fontSize: "20px",
                         padding: "0 6px",
                         borderRadius: "4px",
                       }}
                     >
                       4.5 ★
                     </Button>
-                    <Typography variant="body2" color="textSecondary" ml={1}>
+                    <Typography variant="h6" color="textSecondary" ml={1}>
                       ({bookId.quantity})
                     </Typography>
                   </Box>
 
                   <PriceBox>
-                    <Typography variant="h5" color="primary">
+                    <Typography variant="h4" color="black">
                       Rs. {bookId.discountPrice}
                     </Typography>
-                    <OldPrice>Rs. {bookId.price}</OldPrice>
+                    <OldPrice style={{ fontSize: "20px" }}>
+                      Rs. {bookId.price}
+                    </OldPrice>
                   </PriceBox>
-
-                  <BookDetail variant="body2">
-                    <strong>Book Detail</strong>
+                  <hr />
+                  <BookDetail variant="h6">
+                    <strong> Book Detail</strong>
                     <br />
                     {bookId.description}
                   </BookDetail>
 
-                  <CustomerFeedback>
+                  <CustomerFeedback style={{ backgroundColor: "#F5F5F5" }}>
                     <Typography variant="h6">Customer Feedback</Typography>
-                    <Typography variant="body2" color="textSecondary">
+                    <Typography variant="h6" color="textSecondary">
                       Overall rating
                     </Typography>
 
@@ -281,7 +286,12 @@ const SinglePageBook: React.FC = () => {
                       component="textarea"
                       placeholder="Write your review"
                       rows={4}
-                      sx={{ width: "100%", marginTop: "10px", padding: "8px" }}
+                      sx={{
+                        width: "95%",
+                        marginTop: "10px",
+                        padding: "8px",
+                        fontSize: "20px",
+                      }}
                     />
 
                     <SubmitButton variant="contained">Submit</SubmitButton>
