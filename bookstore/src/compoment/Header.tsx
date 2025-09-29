@@ -19,6 +19,11 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 
 import { QuntContext } from "../pages/Dashboard";
 
+// redux
+import { useDispatch, useSelector } from "react-redux";
+import type { RootState, AppDispatch } from "../redux/store";
+import { setSearchQuery } from "../redux/slice/SearchSlice";
+
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
   borderRadius: theme.shape.borderRadius,
@@ -62,6 +67,11 @@ const CustomSearchIcon = styled(SearchIcon)(() => ({
 }));
 
 const Header: React.FC = () => {
+  // redux
+  const dispatch = useDispatch<AppDispatch>();
+  const query = useSelector((state: RootState) => state.search.query);
+
+  // usecontext
   const { cartNumber } = useContext(QuntContext);
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -126,15 +136,16 @@ const Header: React.FC = () => {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem>
-        <IconButton size="large" color="inherit">
-          <Badge badgeContent={cartNumber} color="error">
-            <ShoppingCartIcon />
-          </Badge>
-        </IconButton>
-        <p>Cart</p>
-      </MenuItem>
-
+      <Link to={"cart"} style={{ textDecoration: "none", color: "black" }}>
+        <MenuItem>
+          <IconButton size="large" color="inherit">
+            <Badge badgeContent={cartNumber} color="error">
+              <ShoppingCartIcon />
+            </Badge>
+          </IconButton>
+          <p>Cart</p>
+        </MenuItem>
+      </Link>
       <MenuItem onClick={handleProfileMenuOpen}>
         <IconButton size="large" color="inherit">
           <AccountCircle />
@@ -185,6 +196,9 @@ const Header: React.FC = () => {
                   backgroundColor: "white",
                   color: "grey",
                 }}
+                // redux
+                value={query}
+                onChange={(e) => dispatch(setSearchQuery(e.target.value))}
               />
             </Search>
           </Box>
