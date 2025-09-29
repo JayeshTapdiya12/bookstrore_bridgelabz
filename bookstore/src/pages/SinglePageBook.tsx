@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useContext } from "react";
 import { useParams } from "react-router-dom";
 import { getBookById } from "../service/bookSerivce";
+import { getWishList as getWishListService } from "../service/wishlistService";
+
 import {
   Container,
   Grid,
@@ -11,18 +13,17 @@ import {
   Button,
   Box,
   Rating,
+  Stack,
+  CircularProgress,
 } from "@mui/material";
 import { styled } from "@mui/system";
 import {
   addCart as addCartService,
   getCart as getCartService,
+  addCart as updateQuantityService,
+  rmeoveCart as RemoveCartService,
 } from "../service/cartService";
-import {
-  addWishlist as addWishService,
-  getWishList as getWishService,
-} from "../service/wishlistService";
-import Stack from "@mui/material/Stack";
-import { CircularProgress } from "@mui/material";
+import { addWishlist as addWishService } from "../service/wishlistService";
 import { QuntContext } from "../pages/Dashboard";
 import "../style/single.css";
 import BookImage from "../assets/Bookimg2.png";
@@ -61,6 +62,7 @@ const PriceBox = styled(Box)({
   alignItems: "center",
   gap: "8px",
   marginTop: "10px",
+  flexWrap: "wrap",
 });
 
 const OldPrice = styled(Typography)({
@@ -92,28 +94,20 @@ const SinglePageBook: React.FC = () => {
   const { id } = useParams();
   const [bookId, setBookId] = useState<Book | null>(null);
   const [existb, setExistb] = useState<Book | null>(null);
+
   const [loading, setLoading] = useState<boolean>(true);
-  const [wish, setWish] = useState<string | null>(null);
   const { refreshCart } = useContext(QuntContext);
+  const [counter, setCounter] = useState<number>(0);
 
   const getBook = async () => {
     try {
       if (!id) return;
       const res = await getBookById(id);
       setBookId(res?.data?.note);
-      console.log("Book API response:", res);
 
       const cartRes = await getCartService();
-      console.log("Cart API response:", cartRes);
-
       const cartBooks = cartRes?.data?.data?.book || [];
-      console.log("Cart Books:", cartBooks);
-      console.log("Current Book Id:", id);
-
       const found = cartBooks.find((b: any) => b?._id === id);
-
-      console.log("Found in cart:", found);
-
       if (found) setExistb(found);
       setLoading(false);
     } catch (error) {
@@ -125,13 +119,12 @@ const SinglePageBook: React.FC = () => {
   const adding = async () => {
     try {
       if (!id) return;
-      const res = await addCartService(id);
-      console.log("Add Cart response:", res);
+      setCounter(counter + 1);
+      await addCartService(id);
 
       const cartRes = await getCartService();
       refreshCart();
       const cartBooks = cartRes?.data?.data?.book || [];
-
       const found = cartBooks.find(
         (b: any) => b?._id?.toString() === id?.toString()
       );
@@ -141,23 +134,12 @@ const SinglePageBook: React.FC = () => {
       console.log(error);
     }
   };
+
   const addwish = async () => {
     try {
-      console.log("innnnnnnnnnnnnnnnwishhshshshsh");
       if (!id) return;
-      const res = await addWishService(id);
-      console.log(res);
-      // const wishres = await getWishService();
-      // const wishBook = wishres?.data?.wishlist?.book || [];
-
-      // const found = wishBook.find(
-      //   (b: any) => b?.bookId?.toString() === id?.toString()
-      // );
-      // if (found) {
-      //   setWish(found);
-      // } else {
-      //   setWish(null);
-      // }
+      await addWishService(id);
+      getBook();
     } catch (error) {
       console.log(error);
     }
@@ -165,44 +147,75 @@ const SinglePageBook: React.FC = () => {
 
   useEffect(() => {
     getBook();
-    setWish(null);
   }, [id]);
+
+  const handleQuantityChange = async (
+    bookId: string,
+    action: "increment" | "decrement"
+  ) => {
+    try {
+      if (action === "increment") {
+        setCounter(counter + 1);
+        await updateQuantityService(bookId);
+      } else {
+        setCounter(counter - 1);
+
+        await RemoveCartService(bookId);
+      }
+      refreshCart();
+    } catch (error) {
+      console.error("Error updating quantity:", error);
+    }
+  };
 
   return (
     <>
       {loading ? (
-        <Stack spacing={2}>
-          <Stack direction="row" spacing={0}>
-            <Button variant="outlined" disabled>
-              <CircularProgress size={24} />
-            </Button>
-          </Stack>
+        <Stack alignItems="center" mt={4}>
+          <CircularProgress size={32} />
         </Stack>
       ) : (
-        <Container maxWidth="lg" sx={{ paddingLeft: "10rem" }}>
-          <h2 style={{ color: "grey" }}>
-            Home/
-            <span style={{ color: "black", fontSize: "15px" }}> ( Book)</span>
-          </h2>
-          <Grid container spacing={5}>
-            {/* left side fornf button adn img */}
+        <Container maxWidth="lg" sx={{ px: { xs: 2, sm: 4, md: 8 } }}>
+          <Typography variant="subtitle1" color="grey" mb={2}>
+            Home /{" "}
+            <span style={{ color: "black", fontSize: "15px" }}>( Book )</span>
+          </Typography>
+
+          <Grid container spacing={4}>
+            {/* Left Section */}
             <Grid item xs={12} md={4}>
               {bookId && (
                 <Card sx={{ boxShadow: 3 }}>
                   <CardMedia
                     component="img"
-                    height="500"
-                    width={"500"}
+                    sx={{
+                      height: { xs: 350, sm: 400, md: 500 },
+                      objectFit: "contain",
+                    }}
                     image={bookId.bookImage ? bookId.bookImage : BookImage}
                     alt={bookId.bookName}
                   />
                   <CardContent>
-                    <Grid container spacing={1}>
+                    <Grid container spacing={2}>
                       <Grid item xs={6}>
-                        {existb?._id === bookId._id ? (
-                          <AddToBagButton variant="contained">
-                            Already in Bag
-                          </AddToBagButton>
+                        {existb?._id === bookId._id && counter > 0 ? (
+                          <div className="cart-quantity">
+                            <button
+                              onClick={() =>
+                                handleQuantityChange(bookId._id, "decrement")
+                              }
+                            >
+                              -
+                            </button>
+                            <input type="text" value={counter} readOnly />
+                            <button
+                              onClick={() =>
+                                handleQuantityChange(bookId._id, "increment")
+                              }
+                            >
+                              +
+                            </button>
+                          </div>
                         ) : (
                           <AddToBagButton variant="contained" onClick={adding}>
                             ADD TO BAG
@@ -210,15 +223,15 @@ const SinglePageBook: React.FC = () => {
                         )}
                       </Grid>
                       <Grid item xs={6}>
-                        {wish?._id === bookId?._id ? (
+                        {/* {existwish?._id === bookId?._id ? (
                           <AddToBagButton variant="contained">
                             Already in wishlist
                           </AddToBagButton>
-                        ) : (
-                          <WishlistButton variant="contained" onClick={addwish}>
-                            WISHLIST
-                          </WishlistButton>
-                        )}
+                        ) : ( */}
+                        <AddToBagButton variant="contained" onClick={addwish}>
+                          WISHLIST
+                        </AddToBagButton>
+                        {/* )} */}
                       </Grid>
                     </Grid>
                   </CardContent>
@@ -226,53 +239,61 @@ const SinglePageBook: React.FC = () => {
               )}
             </Grid>
 
-            {/* right sde: DETAILS */}
-            <Grid item xs={12} md={8} width={500}>
+            {/* Right Section */}
+            <Grid item xs={12} md={8}>
               {bookId && (
                 <>
-                  <Typography variant="h4" gutterBottom>
+                  <Typography variant="h5" gutterBottom>
                     {bookId.bookName}
                   </Typography>
-
-                  <Typography variant="h6" color="textSecondary">
+                  <Typography variant="subtitle1" color="textSecondary">
                     by {bookId.author}
                   </Typography>
 
-                  <Box display="flex" alignItems="center" my={1}>
+                  <Box
+                    display="flex"
+                    alignItems="center"
+                    my={2}
+                    flexWrap="wrap"
+                    gap={1}
+                  >
                     <Button
                       sx={{
                         backgroundColor: "#4caf50",
-                        color: "#ffffff",
-                        fontSize: "20px",
-                        padding: "0 6px",
+                        color: "#fff",
+                        fontSize: "16px",
+                        px: 1.5,
                         borderRadius: "4px",
                       }}
                     >
                       4.5 ★
                     </Button>
-                    <Typography variant="h6" color="textSecondary" ml={1}>
+                    <Typography variant="body1" color="textSecondary">
                       ({bookId.quantity})
                     </Typography>
                   </Box>
 
                   <PriceBox>
-                    <Typography variant="h4" color="black">
+                    <Typography variant="h5" color="black">
                       Rs. {bookId.discountPrice}
                     </Typography>
-                    <OldPrice style={{ fontSize: "20px" }}>
+                    <OldPrice sx={{ fontSize: { xs: "16px", sm: "20px" } }}>
                       Rs. {bookId.price}
                     </OldPrice>
                   </PriceBox>
+
                   <hr />
-                  <BookDetail variant="h6">
-                    <strong> Book Detail</strong>
+                  <BookDetail variant="body1">
+                    <strong>Book Detail</strong>
                     <br />
                     {bookId.description}
                   </BookDetail>
 
-                  <CustomerFeedback style={{ backgroundColor: "#F5F5F5" }}>
+                  <CustomerFeedback
+                    sx={{ p: 2, borderRadius: 2, backgroundColor: "#F5F5F5" }}
+                  >
                     <Typography variant="h6">Customer Feedback</Typography>
-                    <Typography variant="h6" color="textSecondary">
+                    <Typography variant="body1" color="textSecondary">
                       Overall rating
                     </Typography>
 
@@ -287,10 +308,12 @@ const SinglePageBook: React.FC = () => {
                       placeholder="Write your review"
                       rows={4}
                       sx={{
-                        width: "95%",
-                        marginTop: "10px",
-                        padding: "8px",
-                        fontSize: "20px",
+                        width: "100%",
+                        mt: 2,
+                        p: 1.5,
+                        fontSize: "16px",
+                        borderRadius: 1,
+                        border: "1px solid #ccc",
                       }}
                     />
 
