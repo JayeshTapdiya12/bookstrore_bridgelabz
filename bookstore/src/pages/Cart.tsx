@@ -172,64 +172,59 @@ const Cart: React.FC = () => {
       </div>
 
       {/* address details */}
-      {cart.length !== 0 ? (
-        <>
-          <div onClick={() => setIsOpen(!isOpen)} className="cart-container">
-            {isOpen ? "Address Details" : "Address Details"}
-          </div>
 
-          {isOpen && <AddressForm />}
-          <div
-            onClick={() => setIsOpen2(!isOpen2)}
-            className="cart-container"
-            style={{ display: "flex", flexDirection: "column" }}
-          >
-            {isOpen2 ? "Close Order Details" : "Order Details"}
-            {isOpen2 && cart?.length === 0 && (
-              <>
-                {cart.map((ele) => (
-                  <div
-                    key={ele._id}
-                    className="cart-item"
-                    style={{ display: "flex", alignItems: "center" }}
-                  >
-                    <img
-                      src={!ele.bookImage ? bookImmg : ele.bookImage}
-                      alt={ele.bookName || "Book Image"}
-                      className="book-image"
-                      style={{ maxWidth: "50px", marginRight: "10px" }}
-                    />
-                    <div className="cart-details">
-                      <h3>Book Name: {ele.bookName}</h3>
-                      <p>Author: {ele.author}</p>
+      <div onClick={() => setIsOpen(!isOpen)} className="cart-container">
+        {isOpen ? "Address Details" : "Address Details"}
+      </div>
 
-                      <div className="cart-price">
-                        <span>Rs. {ele.discountPrice}</span>
-                        <span className="cart-original-price">
-                          Rs. {ele.price}
-                        </span>
-                      </div>
+      {isOpen && <AddressForm />}
+      <div
+        onClick={() => setIsOpen2(!isOpen2)}
+        className="cart-container"
+        style={{ display: "flex", flexDirection: "column" }}
+      >
+        {isOpen2 ? "Close Order Details" : "Order Details"}
+        {isOpen2 && (
+          <>
+            {cart.map((ele) => (
+              <div
+                key={ele._id}
+                className="cart-item"
+                style={{ display: "flex", alignItems: "center" }}
+              >
+                <img
+                  src={!ele.bookImage ? bookImmg : ele.bookImage}
+                  alt={ele.bookName || "Book Image"}
+                  className="book-image"
+                  style={{ maxWidth: "50px", marginRight: "10px" }}
+                />
+                <div className="cart-details">
+                  <h3>Book Name: {ele.bookName}</h3>
+                  <p>Author: {ele.author}</p>
 
-                      <div className="cart-price">
-                        Total item price:{" "}
-                        <span>Rs. {ele.discountPrice * ele.quantity}</span>
-                      </div>
-                    </div>
+                  <div className="cart-price">
+                    <span>Rs. {ele.discountPrice}</span>
+                    <span className="cart-original-price">Rs. {ele.price}</span>
                   </div>
-                ))}
-                <Button
-                  variant="contained"
-                  color="primary"
-                  sx={{ marginLeft: "auto", marginTop: "20px" }}
-                  onClick={checkout}
-                >
-                  Checkout
-                </Button>
-              </>
-            )}
-          </div>
-        </>
-      ) : null}
+
+                  <div className="cart-price">
+                    Total item price:{" "}
+                    <span>Rs. {ele.discountPrice * ele.quantity}</span>
+                  </div>
+                </div>
+              </div>
+            ))}
+            <Button
+              variant="contained"
+              color="primary"
+              sx={{ marginLeft: "auto", marginTop: "20px" }}
+              onClick={checkout}
+            >
+              Checkout
+            </Button>
+          </>
+        )}
+      </div>
     </>
   );
 };
