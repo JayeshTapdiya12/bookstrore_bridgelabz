@@ -15,6 +15,11 @@ import {
 import { styled } from "@mui/material/styles";
 import Bookimg from "../assets/Bookimg2.png";
 import Fotter from "../compoment/Fotter";
+import "../style/home.css";
+
+// redux
+import { useSelector } from "react-redux";
+import type { RootState } from "../redux/store";
 
 interface Book {
   _id: string;
@@ -32,9 +37,14 @@ interface Book {
 }
 
 const Home: React.FC = () => {
+  // redux
+  const query = useSelector((state: RootState) => state.search.query);
+  const [allBooks, setAllBooks] = useState<Book[]>([]);
+
   const [books, setBooks] = useState<Book[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [currentPage, setCurrentPage] = useState<number>(1);
+
   const itemsPerPage = 12;
 
   const totalPages = Math.ceil(books.length / itemsPerPage);
@@ -68,6 +78,7 @@ const Home: React.FC = () => {
         ? res.data.note
         : [res.data.note];
 
+      setAllBooks(bookList);
       setBooks(bookList);
     } catch (error) {
       console.error("Error fetching books:", error);
@@ -75,6 +86,41 @@ const Home: React.FC = () => {
       setLoading(false);
     }
   };
+  const sortting = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const value = event.target.value;
+
+    let sortedBooks;
+
+    switch (value) {
+      case "lowPrice":
+        sortedBooks = [...allBooks].sort(
+          (a, b) => a.discountPrice - b.discountPrice
+        );
+        break;
+      case "HighPrice":
+        sortedBooks = [...allBooks].sort(
+          (a, b) => b.discountPrice - a.discountPrice
+        );
+        break;
+      case "normal":
+      default:
+        sortedBooks = [...allBooks];
+        break;
+    }
+
+    setBooks(sortedBooks);
+    setCurrentPage(1);
+  };
+  useEffect(() => {
+    setBooks(
+      allBooks.filter(
+        (book) =>
+          book.bookName.toLowerCase().includes(query.toLowerCase()) ||
+          book.description.toLowerCase().includes(query.toLowerCase()) ||
+          book.author.toLowerCase().includes(query.toLowerCase())
+      )
+    );
+  }, [query, allBooks]);
 
   useEffect(() => {
     getBook();
@@ -98,13 +144,22 @@ const Home: React.FC = () => {
           </Typography>
         ) : (
           <>
-            <h2>
-              Books
-              <span style={{ color: "grey", fontSize: "15px" }}>
-                {" "}
-                ( {books.length} items)
-              </span>
-            </h2>
+            <div className="topHeadong">
+              <h2>
+                Books
+                <span style={{ color: "grey", fontSize: "15px" }}>
+                  {" "}
+                  ( {books.length} items)
+                </span>
+              </h2>
+              <div className="sortbutton" style={{ paddingTop: "25px" }}>
+                <select name="" id="" onChange={sortting}>
+                  <option value="normal">Sort by relevance</option>
+                  <option value="lowPrice">Price: Low to High</option>
+                  <option value="HighPrice">Price: High to Low</option>
+                </select>
+              </div>
+            </div>
             <Grid container spacing={3}>
               {paginatedBooks.map((book) => (
                 <Grid item key={book._id} size={{ xs: 12, sm: 6, md: 3 }}>
@@ -118,7 +173,12 @@ const Home: React.FC = () => {
                         height="auto"
                         src={book.bookImage ? book.bookImage : Bookimg}
                         alt={book.bookName}
-                        style={{}}
+                        style={{
+                          width: "50%",
+                          height: "auto",
+                          margin: "25%",
+                          backgroundColor: "grey",
+                        }}
                       />
                       <CardContent>
                         <Typography variant="h6" gutterBottom>
