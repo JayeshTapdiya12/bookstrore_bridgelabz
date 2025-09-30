@@ -19,7 +19,7 @@ interface Address {
   state: string;
 }
 
-const AddressForm: React.FC = () => {
+const AddressForm: React.FC = ({ setisOpen2 }) => {
   const loadAddresses = () => {
     const savedAddresses = localStorage.getItem("addresses");
     return savedAddresses ? JSON.parse(savedAddresses) : [];
@@ -78,11 +78,16 @@ const AddressForm: React.FC = () => {
       "saved_addresses_for_order",
       JSON.stringify(selectedAddress)
     );
+    setisOpen2(true);
     alert("Addresses saved for order!");
   };
 
   return (
-    <Box sx={{ width: "600px", margin: "20px auto" }}>
+    <Box
+      sx={{ width: "600px", margin: "20px auto" }}
+      className="cart-container"
+      style={{ width: "80%" }}
+    >
       <Box sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}>
         <h3>Customer Details</h3>
         <Button variant="outlined" onClick={handleAddAddress}>
@@ -93,7 +98,7 @@ const AddressForm: React.FC = () => {
       {!newAddressType && (
         <Box sx={{ mb: 2 }}>
           <FormControl fullWidth>
-            <InputLabel>Address Type</InputLabel>
+            <InputLabel>New Address Type</InputLabel>
             <Select
               value={newAddressType}
               onChange={(e) => setNewAddressType(e.target.value)}
