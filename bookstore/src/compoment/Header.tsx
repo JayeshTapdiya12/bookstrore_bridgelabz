@@ -117,7 +117,7 @@ const Header: React.FC = () => {
       onClose={handleMenuClose}
       sx={{ mt: 2 }}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+      {/* <MenuItem onClick={handleMenuClose}>Profile</MenuItem> */}
       <Link to={"/wishlist"} style={{ textDecoration: "none", color: "black" }}>
         <MenuItem onClick={handleMenuClose}>Wishlist</MenuItem>
       </Link>
@@ -150,7 +150,7 @@ const Header: React.FC = () => {
         <IconButton size="large" color="inherit">
           <AccountCircle />
         </IconButton>
-        <p>Profile</p>
+        <p>More Options</p>
       </MenuItem>
     </Menu>
   );
@@ -239,7 +239,7 @@ const Header: React.FC = () => {
             >
               <AccountCircle />
               <span style={{ fontSize: "15px", marginTop: "10px" }}>
-                Profile
+                More Options
               </span>
             </IconButton>
           </Box>
