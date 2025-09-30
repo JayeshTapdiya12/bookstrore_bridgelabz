@@ -14,6 +14,7 @@ import AddressForm from "./AddressForm";
 import { addOrder as AddOrderService } from "../service/orderService";
 import { useNavigate } from "react-router-dom";
 interface Book {
+  quantity: string | number | readonly string[] | undefined;
   code: number;
   message: string;
   data: {
@@ -93,7 +94,7 @@ const Cart: React.FC = () => {
 
   return (
     <>
-      <div className="cart-container">
+      <div className="cart-container" style={{ paddingTop: "10px" }}>
         <h4 style={{ color: "grey" }}>
           Home/
           <span style={{ color: "black", fontSize: "15px" }}> (Cart)</span>
@@ -112,8 +113,8 @@ const Cart: React.FC = () => {
           cart?.map((ele) => (
             <div key={ele._id} className="cart-item">
               <img
-                src={!ele.bookImage ? bookImmg : ele.bookImage}
-                alt={ele.bookName}
+                src={!ele.bookImage ? bookImmg : ele?.bookImage}
+                alt={ele?.bookName}
                 className="book-image"
               />
               <div className="cart-details">
@@ -133,12 +134,14 @@ const Cart: React.FC = () => {
                 <div className="cart-quantity">
                   <button
                     onClick={() => handleQuantityChange(ele._id, "decrement")}
+                    style={{ borderRadius: "10px" }}
                   >
                     -
                   </button>
                   <input type="text" value={ele.quantity} readOnly />
                   <button
                     onClick={() => handleQuantityChange(ele._id, "increment")}
+                    style={{ borderRadius: "10px" }}
                   >
                     +
                   </button>
@@ -161,7 +164,7 @@ const Cart: React.FC = () => {
                   variant="contained"
                   color="primary"
                   sx={{ marginLeft: "auto", marginTop: "20px" }}
-                  onClick={checkout}
+                  onClick={() => setIsOpen(!isOpen)}
                 >
                   PlaceOrder
                 </Button>
@@ -173,58 +176,64 @@ const Cart: React.FC = () => {
 
       {/* address details */}
 
-      <div onClick={() => setIsOpen(!isOpen)} className="cart-container">
-        {isOpen ? "Address Details" : "Address Details"}
-      </div>
+      {cart?.length !== 0 ? (
+        <>
+          <div onClick={() => setIsOpen(!isOpen)} className="cart-container">
+            {isOpen ? "Address Details" : "Address Details"}
+          </div>
 
-      {isOpen && <AddressForm />}
-      <div
-        onClick={() => setIsOpen2(!isOpen2)}
-        className="cart-container"
-        style={{ display: "flex", flexDirection: "column" }}
-      >
-        {isOpen2 ? "Close Order Details" : "Order Details"}
-        {isOpen2 && (
-          <>
-            {cart.map((ele) => (
-              <div
-                key={ele._id}
-                className="cart-item"
-                style={{ display: "flex", alignItems: "center" }}
-              >
-                <img
-                  src={!ele.bookImage ? bookImmg : ele.bookImage}
-                  alt={ele.bookName || "Book Image"}
-                  className="book-image"
-                  style={{ maxWidth: "50px", marginRight: "10px" }}
-                />
-                <div className="cart-details">
-                  <h3>Book Name: {ele.bookName}</h3>
-                  <p>Author: {ele.author}</p>
+          {isOpen && <AddressForm setisOpen2={setIsOpen2} />}
+          <div
+            onClick={() => setIsOpen2(!isOpen2)}
+            className="cart-container"
+            style={{ display: "flex", flexDirection: "column" }}
+          >
+            {isOpen2 ? "Close Order Details" : "Order Details"}
+            {isOpen2 && (
+              <>
+                {cart.map((ele) => (
+                  <div
+                    key={ele._id}
+                    className="cart-item"
+                    style={{ display: "flex", alignItems: "center" }}
+                  >
+                    <img
+                      src={!ele.bookImage ? bookImmg : ele.bookImage}
+                      alt={ele.bookName || "Book Image"}
+                      className="book-image"
+                      style={{ maxWidth: "50px", marginRight: "10px" }}
+                    />
+                    <div className="cart-details">
+                      <h3>Book Name: {ele.bookName}</h3>
+                      <p>Author: {ele.author}</p>
 
-                  <div className="cart-price">
-                    <span>Rs. {ele.discountPrice}</span>
-                    <span className="cart-original-price">Rs. {ele.price}</span>
+                      <div className="cart-price">
+                        <span>Rs. {ele.discountPrice}</span>
+                        <span className="cart-original-price">
+                          Rs. {ele.price}
+                        </span>
+                      </div>
+
+                      <div className="cart-price">
+                        Total item price:{" "}
+                        <span>Rs. {ele.discountPrice * ele.quantity}</span>
+                      </div>
+                    </div>
                   </div>
-
-                  <div className="cart-price">
-                    Total item price:{" "}
-                    <span>Rs. {ele.discountPrice * ele.quantity}</span>
-                  </div>
-                </div>
-              </div>
-            ))}
-            <Button
-              variant="contained"
-              color="primary"
-              sx={{ marginLeft: "auto", marginTop: "20px" }}
-              onClick={checkout}
-            >
-              Checkout
-            </Button>
-          </>
-        )}
-      </div>
+                ))}
+                <Button
+                  variant="contained"
+                  color="primary"
+                  sx={{ marginLeft: "auto", marginTop: "20px" }}
+                  onClick={checkout}
+                >
+                  Checkout
+                </Button>
+              </>
+            )}
+          </div>
+        </>
+      ) : null}
     </>
   );
 };
