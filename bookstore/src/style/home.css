@@ -3,3 +3,8 @@
   flex-direction: row;
   justify-content: space-between;
 }
+.sortbutton select {
+  width: 10vw;
+  height: 2vw;
+  font-size: 18px;
+}
