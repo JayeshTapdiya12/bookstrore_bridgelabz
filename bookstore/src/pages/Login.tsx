@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import "../style/login.css";
 import { useNavigate } from "react-router-dom";
 import {
@@ -43,24 +43,25 @@ function a11yProps(index: number) {
 }
 
 const Login: React.FC = () => {
-  const [tabValue, setTabValue] = useState(0);
   const navigate = useNavigate();
 
+  const [value, setValue] = useState(0); // Tabs state
+
+  // Login form states
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  // Signup form states
   const [fullName, setFullName] = useState("");
   const [lastname, setLastname] = useState("");
-
   const [signupEmail, setSignupEmail] = useState("");
   const [signupPassword, setSignupPassword] = useState("");
   const [phone, setPhone] = useState("");
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
-    setTabValue(newValue);
+    setValue(newValue);
   };
 
-  //  Login handler
   const sendLogin = async () => {
     if (!email || !password) {
       alert("Please enter both email and password");
@@ -76,7 +77,6 @@ const Login: React.FC = () => {
     }
   };
 
-  //  Signup handler
   const sendSign = async () => {
     if (!fullName || !lastname || !signupEmail || !signupPassword || !phone) {
       alert("Please enter all signup details.");
@@ -100,163 +100,152 @@ const Login: React.FC = () => {
   };
 
   return (
-    <>
-      {" "}
-      <Box sx={{ width: "100%" }}>
-        {/* Tabs for switching */}
-        <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-          {/* Login Panel */}
-          <CustomTabPanel value={tabValue} index={0}>
-            <div className="login-container">
-              <div className="login-left">
-                <img
-                  src={image}
-                  alt="Online Book Shopping"
-                  className="login-image"
-                  style={{ borderRadius: "15vw" }}
+    <Box sx={{ width: "100%" }}>
+      <CustomTabPanel value={value} index={0}>
+        <div className="login-container">
+          <div className="login-left">
+            <img
+              src={image}
+              alt="Online Book Shopping"
+              className="login-image"
+              style={{ borderRadius: "15vw" }}
+            />
+            <p>ONLINE BOOK SHOPPING</p>
+          </div>
+          <div className="login-right">
+            <div className="login-box">
+              {/* <h2>LOGIN</h2> */}
+              <Tabs
+                value={value}
+                onChange={handleTabChange}
+                aria-label="login-signup-tabs"
+              >
+                <Tab
+                  label="Login"
+                  {...a11yProps(0)}
+                  style={{
+                    fontSize: "20px",
+                    fontWeight: "bold",
+                    color: "black",
+                  }}
                 />
-                <p>ONLINE BOOK SHOPPING</p>
+                <Tab
+                  label="SignUp"
+                  {...a11yProps(1)}
+                  style={{ marginLeft: "180px" }}
+                />
+              </Tabs>
+              <div className="input-group" style={{ marginTop: "30px" }}>
+                <label>Email Id</label>
+                <input
+                  type="email"
+                  placeholder="Enter your email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
               </div>
-              <div className="login-right">
-                <div className="login-box">
-                  {/* <h2 className="active-tab"> LOGIN</h2> */}
-                  <Tabs
-                    value={tabValue}
-                    onChange={handleTabChange}
-                    aria-label="login-signup-tabs"
-                    className="active-tab"
-                  >
-                    <Tab
-                      className="active-tab"
-                      label="Login"
-                      {...a11yProps(0)}
-                    />
-                    <Tab
-                      label="Sign Up"
-                      className="inactive-tab"
-                      {...a11yProps(1)}
-                    />
-                  </Tabs>
-                  <div className="input-group">
-                    <label>Email Id</label>
-                    <input
-                      type="email"
-                      placeholder="Enter your email"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                    />
-                  </div>
-                  <div className="input-group">
-                    <label>Password</label>
-                    <input
-                      type="password"
-                      placeholder="Enter your password"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                    />
-                  </div>
-                  <div className="forgot-password">
-                    <a href="#">Forgot Password?</a>
-                  </div>
-                  <button onClick={sendLogin} className="login-button">
-                    Login
-                  </button>
-                  <div className="or-divider">OR</div>
-                  <div className="social-login">
-                    <button className="social-button facebook">Facebook</button>
-                    <button className="social-button google">Google</button>
-                  </div>
-                </div>
+              <div className="input-group">
+                <label>Password</label>
+                <input
+                  type="password"
+                  placeholder="Enter your password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
               </div>
+              <button onClick={sendLogin} className="login-button">
+                Login
+              </button>
             </div>
-          </CustomTabPanel>
+          </div>
+        </div>
+      </CustomTabPanel>
 
-          {/* Signup Panel */}
-          <CustomTabPanel value={tabValue} index={1}>
-            <div className="signup-container">
-              <div className="signup-left">
-                <img
-                  src={image}
-                  alt="Online Book Shopping"
-                  className="signup-image"
-                  style={{ borderRadius: "15vw" }}
+      <CustomTabPanel value={value} index={1}>
+        <div className="signup-container">
+          <div className="signup-left">
+            <img
+              src={image}
+              alt="Online Book Shopping"
+              className="signup-image"
+              style={{ borderRadius: "15vw" }}
+            />
+            <p>ONLINE BOOK SHOPPING</p>
+          </div>
+          <div className="signup-right">
+            <div className="signup-box">
+              {/* <h2>SIGNUP</h2> */}
+              <Tabs
+                value={value}
+                onChange={handleTabChange}
+                aria-label="login-signup-tabs"
+                style={{ gap: "20px" }}
+              >
+                <Tab label="Login" {...a11yProps(0)} />
+                <Tab
+                  label="SignUp"
+                  {...a11yProps(1)}
+                  style={{
+                    marginLeft: "180px",
+                    fontSize: "20px",
+                    fontWeight: "bold",
+                    color: "black",
+                  }}
                 />
-                <p>ONLINE BOOK SHOPPING</p>
+              </Tabs>
+              <div className="input-group">
+                <label>First Name</label>
+                <input
+                  type="text"
+                  placeholder="Enter First name"
+                  value={fullName}
+                  onChange={(e) => setFullName(e.target.value)}
+                />
               </div>
-              <div className="signup-right">
-                <div className="signup-box">
-                  {/* <h2 className="active-tab">SIGNUP</h2> */}
-                  <Tabs
-                    value={tabValue}
-                    onChange={handleTabChange}
-                    aria-label="login-signup-tabs"
-                  >
-                    <Tab
-                      label="Login"
-                      className="inactive-tab"
-                      {...a11yProps(0)}
-                    />
-                    <Tab
-                      label="Sign Up"
-                      className="active-tab"
-                      {...a11yProps(1)}
-                    />
-                  </Tabs>
-                  <div className="input-group">
-                    <label>first Name</label>
-                    <input
-                      type="text"
-                      placeholder="Enter full name"
-                      value={fullName}
-                      onChange={(e) => setFullName(e.target.value)}
-                    />
-                  </div>
-                  <div className="input-group">
-                    <label>last Name</label>
-                    <input
-                      type="text"
-                      placeholder="Enter full name"
-                      value={lastname}
-                      onChange={(e) => setLastname(e.target.value)}
-                    />
-                  </div>
-                  <div className="input-group">
-                    <label>Email Id</label>
-                    <input
-                      type="email"
-                      placeholder="Enter your email"
-                      value={signupEmail}
-                      onChange={(e) => setSignupEmail(e.target.value)}
-                    />
-                  </div>
-                  <div className="input-group">
-                    <label>Password</label>
-                    <input
-                      type="password"
-                      placeholder="Enter your password"
-                      value={signupPassword}
-                      onChange={(e) => setSignupPassword(e.target.value)}
-                    />
-                  </div>
-                  <div className="input-group">
-                    <label>Mobile Number</label>
-                    <input
-                      type="text"
-                      placeholder="Enter mobile number"
-                      value={phone}
-                      onChange={(e) => setPhone(e.target.value)}
-                    />
-                  </div>
-                  <button onClick={sendSign} className="signup-button">
-                    Signup
-                  </button>
-                </div>
+              <div className="input-group">
+                <label>Last Name</label>
+                <input
+                  type="text"
+                  placeholder="Enter last name"
+                  value={lastname}
+                  onChange={(e) => setLastname(e.target.value)}
+                />
               </div>
+              <div className="input-group">
+                <label>Email Id</label>
+                <input
+                  type="email"
+                  placeholder="Enter your email"
+                  value={signupEmail}
+                  onChange={(e) => setSignupEmail(e.target.value)}
+                />
+              </div>
+              <div className="input-group">
+                <label>Password</label>
+                <input
+                  type="password"
+                  placeholder="Enter your password"
+                  value={signupPassword}
+                  onChange={(e) => setSignupPassword(e.target.value)}
+                />
+              </div>
+              <div className="input-group">
+                <label>Mobile Number</label>
+                <input
+                  type="number"
+                  placeholder="Enter mobile number"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                />
+              </div>
+              <button onClick={sendSign} className="signup-button">
+                Signup
+              </button>
             </div>
-          </CustomTabPanel>
-        </Box>
-      </Box>
-    </>
+          </div>
+        </div>
+      </CustomTabPanel>
+    </Box>
   );
 };
 
