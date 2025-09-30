@@ -1,173 +1,235 @@
-.mainPhoto {
+.signup-container,
+.login-container {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  /* gap: 30px; */
-  /* background-color: red; */
-  padding-top: 30px;
-  max-width: 1100px;
-  margin: auto;
-  margin-top: 5%;
-}
-.thePhoto {
-  background-color: grey;
-}
-.thePhoto img {
-  height: auto;
-  border-radius: 15vw;
-}
-.thePhoto p {
-  margin-top: 1rem;
-  /* font-size: 1.2rem; */
-  font-weight: bold;
+  width: 80%;
+  max-width: 900px;
+  background-color: white;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin: 7vw auto;
 }
 
+.signup-left,
 .login-left {
-  flex: 1;
+  background-color: #f8f8f8;
+  width: 50%;
+  padding: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  text-align: center;
-}
-
-.login-image {
-  max-width: 280px;
-  width: 100%;
-  height: auto;
-  margin-bottom: 15px;
-  border-radius: 15vw;
-  background-color: grey;
-}
-
-.login-right,
-.signup-right {
-  flex: 1;
-  display: flex;
   justify-content: center;
 }
 
-.login-box,
-.signup-box {
-  width: 100%;
-  max-width: 400px;
-  padding: 30px;
-  border: 1px solid #ddd;
-  border-radius: 12px;
-  background: #fff;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+.signup-left img,
+.login-left img {
+  max-width: 80%;
+}
+
+.signup-left p,
+.login-left p {
+  margin-top: 20px;
+  font-size: 20px;
+  font-weight: bold;
+  color: #333;
+}
+
+.signup-right,
+.login-right {
+  width: 50%;
+  padding: 40px;
+}
+
+.signup-box,
+.login-box {
+  max-width: 100%;
 }
 
 .input-group {
-  margin-bottom: 15px;
-  text-align: left;
+  margin-bottom: 20px;
 }
 
 .input-group label {
-  display: block;
+  font-size: 14px;
   margin-bottom: 5px;
-  font-weight: 500;
+  display: block;
 }
 
 .input-group input {
   width: 100%;
   padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  font-size: 15px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
 }
 
-.button-group {
+.signup-button,
+.login-button {
+  width: 100%;
+  padding: 12px;
+  background-color: #a03037;
+  border: none;
+  color: white;
+  font-weight: bold;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.social-login {
   display: flex;
   justify-content: space-between;
-  gap: 15px;
+}
+
+.social-button {
+  flex: 1;
+  margin: 0 5px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: white;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.social-button.facebook {
+  color: #3b5998;
+}
+
+.social-button.google {
+  color: #db4437;
+}
+
+.inactive-tab {
+  color: grey;
+}
+
+.active-tab {
+  color: #a03037;
+}
+
+.forgot-password {
+  display: flex;
+  justify-content: flex-end;
   margin-bottom: 20px;
 }
 
-.login-button,
-.signup-button {
-  flex: 1;
-  max-width: 48%;
-  padding: 12px;
-  font-size: 15px;
-  border: none;
-  border-radius: 6px;
+.forgot-password a {
+  text-decoration: none;
+  color: grey;
+  font-size: 14px;
+}
+
+.or-divider {
+  text-align: center;
+  margin: 20px 0;
+  color: grey;
+}
+
+.signup-header,
+.login-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 30px;
+}
+
+.signup-header h2,
+.login-header h2 {
   cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.login-button {
-  background: #a03037;
-  color: white;
-}
-
-.login-button:hover {
-  background: #7d242b;
-}
-
-.signup-button {
-  background: #f0f0f0;
-  color: #333;
-}
-
-.signup-button:hover {
-  background: #ddd;
+  font-weight: bold;
 }
 
 @media (max-width: 768px) {
-  .mainPhoto {
+  .signup-container,
+  .login-container {
     flex-direction: column;
-    gap: 20px;
-    padding: 20px;
+    margin-top: 3vw;
+    width: 90%;
   }
 
+  .signup-left,
   .login-left {
-    order: 1;
-  }
-
-  .login-right,
-  .signup-right {
-    order: 2;
     width: 100%;
+    padding: 15px;
   }
 
-  .login-box,
-  .signup-box {
-    max-width: 100%;
+  .signup-right,
+  .login-right {
+    width: 100%;
     padding: 20px;
   }
 
-  .login-image {
-    max-width: 200px;
+  .signup-left img,
+  .login-left img {
+    width: 60%;
+  }
+
+  .signup-header,
+  .login-header {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .input-group input {
+    padding: 12px;
+  }
+
+  .signup-button,
+  .login-button {
+    font-size: 16px;
+  }
+
+  .social-login {
+    flex-direction: column;
+    margin-top: 20px;
+  }
+
+  .social-button {
+    margin-bottom: 10px;
   }
 }
 
 @media (max-width: 480px) {
-  .mainPhoto {
-    padding: 15px;
-    gap: 15px;
+  .signup-left img,
+  .login-left img {
+    width: 50%;
   }
 
-  .login-box,
-  .signup-box {
-    padding: 15px;
+  .signup-container,
+  .login-container {
+    margin-top: 5vw;
+    width: 85%;
   }
 
-  .login-image {
-    max-width: 150px;
+  .signup-right,
+  .login-right {
+    padding: 15px;
   }
 
   .input-group input {
-    padding: 8px;
+    padding: 12px;
+  }
+
+  .signup-button,
+  .login-button {
+    font-size: 16px;
+  }
+
+  .social-button {
     font-size: 14px;
   }
 
-  .login-button,
-  .signup-button {
-    padding: 10px;
+  .or-divider {
     font-size: 14px;
   }
+}
 
-  .button-group {
-    gap: 10px;
-  }
+.MuiTabs-root {
+  padding-bottom: 16px;
+}
+.MuiTab-root {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.MuiTabs-flexContainer {
+  justify-content: center;
 }
