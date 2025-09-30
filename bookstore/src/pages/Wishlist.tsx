@@ -9,24 +9,11 @@ import { styled } from "@mui/system";
 import { removeWishlist as removeWislListService } from "../service/wishlistService";
 
 interface Book {
-  code: number;
-  message: string;
-  wishlist: null | {
-    _id: string;
-    wishBy: string;
-    book: [
-      {
-        _id: string;
-        bookId: string;
-        bookname: string;
-        authorname: string;
-        image: string;
-      }
-    ];
-    createdAt: string;
-    updatedAt: string;
-    __v: number;
-  };
+  _id: string;
+  bookId: string;
+  bookname: string;
+  authorname: string;
+  image: string;
 }
 const AddToBagButton = styled(Button)({
   backgroundColor: "#b71c1c",
@@ -60,7 +47,7 @@ const Wishlist: React.FC = () => {
 
   return (
     <>
-      <div className="cart-container">
+      <div className="cart-container" style={{ paddingTop: "15px" }}>
         <h4 style={{ color: "grey" }}>
           Home/
           <span style={{ color: "black", fontSize: "15px" }}> (Wishlist)</span>
@@ -73,12 +60,16 @@ const Wishlist: React.FC = () => {
               </Button>
             </Stack>
           </Stack>
-        ) : wish.length === 0 ? (
-          <p>Your cart is empty</p>
+        ) : wish?.length === 0 ? (
+          <h1>Your cart is empty</h1>
         ) : (
-          wish.map((ele) => (
-            <div key={ele._id} className="cart-item">
-              <img src={bookImmg} alt={ele.bookName} className="book-image" />
+          wish?.map((ele) => (
+            <div
+              key={ele._id}
+              className="cart-item"
+              style={{ marginTop: "25px" }}
+            >
+              <img src={bookImmg} alt={ele.bookname} className="book-image" />
               <div className="cart-details">
                 <h3>Book Name: {ele.bookname}</h3>
                 <p>Author: {ele.authorname}</p>
