@@ -19,7 +19,11 @@ interface Address {
   state: string;
 }
 
-const AddressForm: React.FC = ({ setisOpen2 }) => {
+interface AddressFormProps {
+  setisOpen2: (open: boolean) => void;
+}
+
+const AddressForm: React.FC<AddressFormProps> = ({ setisOpen2 }) => {
   const loadAddresses = () => {
     const savedAddresses = localStorage.getItem("addresses");
     return savedAddresses ? JSON.parse(savedAddresses) : [];

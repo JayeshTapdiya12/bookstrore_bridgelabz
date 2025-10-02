@@ -14,29 +14,23 @@ import AddressForm from "./AddressForm";
 import { addOrder as AddOrderService } from "../service/orderService";
 import { useNavigate } from "react-router-dom";
 interface Book {
-  quantity: string | number | readonly string[] | undefined;
-  code: number;
-  message: string;
-  data: {
-    data: {
-      isPurchased: boolean;
-      _id: string;
-      cartBY: string;
-      book: {
-        _id: string;
-        description: string;
-        discountPrice: number;
-        bookName: string;
-        author: string;
-        quantity: number;
-        price: number;
-      }[];
-      cartTotal: number;
-      createdAt: string;
-      updatedAt: string;
-      __v: number;
-    };
-  };
+  bookImage: any;
+  isPurchased: boolean;
+  _id: string;
+  cartBY: string;
+  // book: {
+  // _id: string;
+  description: string;
+  discountPrice: number;
+  bookName: string;
+  author: string;
+  quantity: number;
+  price: number;
+  // }[];/
+  cartTotal: number;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
 }
 
 const Cart: React.FC = () => {
@@ -56,7 +50,24 @@ const Cart: React.FC = () => {
       const bookcart = res?.data?.data?.book;
       console.log(res?.data?.data?.book);
       setTotalPrice(res?.data?.data?.cartTotal);
-      setCart(bookcart);
+      setCart(
+        bookcart.map((item: any) => ({
+          bookImage: item.bookImage ?? "",
+          isPurchased: item.isPurchased ?? false,
+          _id: item._id,
+          cartBY: item.cartBY ?? "",
+          description: item.description,
+          discountPrice: item.discountPrice,
+          bookName: item.bookName,
+          author: item.author,
+          quantity: item.quantity,
+          price: item.price,
+          cartTotal: item.cartTotal ?? 0,
+          createdAt: item.createdAt ?? "",
+          updatedAt: item.updatedAt ?? "",
+          __v: item.__v ?? 0,
+        }))
+      );
     } catch (error) {
       console.error("Error fetching cart:", error);
       setCart([]);
