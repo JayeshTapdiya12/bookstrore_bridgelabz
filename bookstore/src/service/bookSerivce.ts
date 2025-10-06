@@ -27,7 +27,6 @@ interface bookResp {
 
 export const getBook = async (): Promise<AxiosResponse<bookRespById>> => {
   let res = await axios.get(baseUrl, headers);
-  console.log(res);
   return res;
 };
 export interface Note {
@@ -55,6 +54,5 @@ export const getBookById = async (
   id: string
 ): Promise<AxiosResponse<bookRespById>> => {
   let res = await axios.get(`${baseUrl}/${id}`, headers);
-  console.log(res);
   return res;
 };
