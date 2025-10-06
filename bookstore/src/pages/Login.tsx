@@ -136,18 +136,20 @@ const Login: React.FC = () => {
                 />
               </Tabs>
               <div className="input-group" style={{ marginTop: "30px" }}>
-                <label>Email Id</label>
+                <label htmlFor="login-email">Email Id</label>
                 <input
                   type="email"
+                  id="login-email"
                   placeholder="Enter your email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                 />
               </div>
               <div className="input-group">
-                <label>Password</label>
+                <label htmlFor="login-password">Password</label>
                 <input
                   type="password"
+                  id="login-password"
                   placeholder="Enter your password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
@@ -194,45 +196,50 @@ const Login: React.FC = () => {
                 />
               </Tabs>
               <div className="input-group">
-                <label>First Name</label>
+                <label htmlFor="signup-firstname"> First Name</label>
                 <input
                   type="text"
+                  id="signup-firstname"
                   placeholder="Enter First name"
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
                 />
               </div>
               <div className="input-group">
-                <label>Last Name</label>
+                <label htmlFor="signup-lastname">Last Name</label>
                 <input
                   type="text"
+                  id="signup-lastname"
                   placeholder="Enter last name"
                   value={lastname}
                   onChange={(e) => setLastname(e.target.value)}
                 />
               </div>
               <div className="input-group">
-                <label>Email Id</label>
+                <label htmlFor="signup-email">Email Id</label>
                 <input
                   type="email"
+                  id="signup-email"
                   placeholder="Enter your email"
                   value={signupEmail}
                   onChange={(e) => setSignupEmail(e.target.value)}
                 />
               </div>
               <div className="input-group">
-                <label>Password</label>
+                <label htmlFor="signup-password">Password</label>
                 <input
                   type="password"
+                  id="signup-password"
                   placeholder="Enter your password"
                   value={signupPassword}
                   onChange={(e) => setSignupPassword(e.target.value)}
                 />
               </div>
               <div className="input-group">
-                <label>Mobile Number</label>
+                <label htmlFor="signup-phone">Mobile Number</label>
                 <input
                   type="number"
+                  id="signup-phone"
                   placeholder="Enter mobile number"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
