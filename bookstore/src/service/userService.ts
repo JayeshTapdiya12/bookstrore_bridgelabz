@@ -26,11 +26,11 @@ export const Login = async (
 };
 
 interface SignUpRequest {
-  fullName: string;
-
+  name: string;
+  lname: string;
   email: string;
   password: string;
-  phone: string;
+  mobile: string;
 }
 
 interface SignUpResponse {
