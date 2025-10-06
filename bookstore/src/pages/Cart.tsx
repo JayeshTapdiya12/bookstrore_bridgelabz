@@ -98,6 +98,7 @@ const Cart: React.FC = () => {
   const checkout = async () => {
     if (cart?.length !== 0) {
       const res = await AddOrderService();
+      refreshCart();
       console.log(res);
       navigate("/order");
     }
