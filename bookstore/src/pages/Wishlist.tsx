@@ -33,7 +33,6 @@ const Wishlist: React.FC = () => {
   const getWish = async () => {
     let res = await getWishListService();
     setLoading(false);
-    console.log(res?.data?.wishlist?.book);
     setWish(res?.data?.wishlist?.book);
   };
   useEffect(() => {
@@ -43,7 +42,6 @@ const Wishlist: React.FC = () => {
   const removeWishList = async (id: string) => {
     await removeWislListService(id);
     getWish();
-    // console.log(res?.data);
   };
 
   return (
