@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { getBook as getBookService } from "../service/bookSerivce";
 import { Outlet, Link } from "react-router-dom";
+
 import {
   Container,
   Grid,
@@ -162,7 +163,7 @@ const Home: React.FC = () => {
             </div>
             <Grid container spacing={3}>
               {paginatedBooks.map((book) => (
-                <Grid item key={book._id} size={{ xs: 12, sm: 6, md: 3 }}>
+                <Grid key={book._id} size={{ xs: 12, sm: 6, md: 3 }}>
                   <Link
                     to={`book/${book._id}`}
                     style={{ textDecoration: "none", color: "inherit" }}
