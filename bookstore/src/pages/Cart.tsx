@@ -48,7 +48,6 @@ const Cart: React.FC = () => {
     try {
       const res = await getCartService();
       const bookcart = res?.data?.data?.book;
-      console.log(res?.data?.data?.book);
       setTotalPrice(res?.data?.data?.cartTotal);
       setCart(
         bookcart.map((item: any) => ({
@@ -99,7 +98,6 @@ const Cart: React.FC = () => {
     if (cart?.length !== 0) {
       const res = await AddOrderService();
       refreshCart();
-      console.log(res);
       navigate("/order");
     }
   };
