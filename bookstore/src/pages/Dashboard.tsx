@@ -26,10 +26,7 @@ const Dashboard: React.FC = () => {
 
   const cartGet = async () => {
     const res = await getCartService();
-    console.log(res);
     const bookcart = res?.data?.data?.book;
-    console.log("heelo");
-    console.log(bookcart);
     let number = 0;
     if (bookcart?.length !== 0) {
       number = bookcart?.reduce((total, book) => total + book.quantity, 0);
@@ -37,7 +34,6 @@ const Dashboard: React.FC = () => {
 
     setCartNumber(number);
   };
-  console.log(cartNumber);
   useEffect(() => {
     cartGet();
   }, []);
