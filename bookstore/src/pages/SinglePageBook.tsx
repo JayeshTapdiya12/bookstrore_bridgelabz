@@ -113,7 +113,6 @@ const SinglePageBook: React.FC = () => {
 
       setLoading(false);
     } catch (error) {
-      console.log(error);
       setLoading(false);
     }
   };
@@ -131,19 +130,13 @@ const SinglePageBook: React.FC = () => {
         (b: any) => b?._id?.toString() === id?.toString()
       );
       if (found) setExistb(found as Note);
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
 
   const addwish = async () => {
-    try {
-      if (!id) return;
-      await addWishService(id);
-      getBook();
-    } catch (error) {
-      console.log(error);
-    }
+    if (!id) return;
+    await addWishService(id);
+    getBook();
   };
 
   useEffect(() => {
