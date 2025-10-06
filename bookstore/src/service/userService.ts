@@ -63,6 +63,5 @@ export const Sign = async (
     mobile,
   };
   let res = await axios.post<SignUpResponse>(`${baseUrl}/sign`, data);
-  console.log(data);
   return res;
 };
