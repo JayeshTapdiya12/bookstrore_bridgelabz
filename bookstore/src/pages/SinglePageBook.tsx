@@ -8,11 +8,15 @@ import {
   rmeoveCart as RemoveCartService,
 } from "../service/cartService";
 import { addWishlist as addWishService } from "../service/wishlistService";
-import type { Note } from "../service/bookService";
+import type { Note } from "../service/bookSerivce";
+// import Grid from "@mui/material/Grid";
+// import Grid from "@mui/material/Unstable_Grid2";
+import { Grid2 as Grid } from "@mui/material";
+
 import {
   CardContent,
   Container,
-  Grid,
+  // Grid,
   Card,
   CardMedia,
   Typography,
@@ -37,22 +41,6 @@ interface Book {
   discountPrice: number;
   bookImage: string;
 }
-// interface Note{
-//     // note: {
-//     _id: string;
-//     description: string;
-//     discountPrice: number;
-//     bookImage: null | string;
-//     admin_user_id: string;
-//     bookName: string;
-//     author: string;
-//     quantity: number;
-//     price: number;
-//     createdAt: string;
-//     updatedAt: string;
-//     __v: number;
-//   // };
-// }
 
 const AddToBagButton = styled(Button)({
   backgroundColor: "#b71c1c",
