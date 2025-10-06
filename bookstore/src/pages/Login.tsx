@@ -69,7 +69,6 @@ const Login: React.FC = () => {
     }
     try {
       const res = await loginService(email, password);
-      console.log("Login response:", res.data);
       navigate("/");
     } catch (error) {
       console.error("Login failed:", error);
@@ -90,7 +89,6 @@ const Login: React.FC = () => {
         signupPassword,
         phone
       );
-      console.log("Signup response:", res.data);
       alert(res.data.message);
       navigate("/login");
     } catch (error) {
