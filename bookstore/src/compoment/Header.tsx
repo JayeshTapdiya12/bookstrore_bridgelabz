@@ -1,5 +1,4 @@
 import React, { useState, useContext } from "react";
-// import "../style/header.css";
 import "../style/header1.css";
 import { styled, alpha } from "@mui/material/styles";
 import AppBar from "@mui/material/AppBar";
@@ -17,7 +16,6 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import logo from "../assets/education.png";
 import { Link, NavLink, useNavigate } from "react-router-dom";
-
 import { QuntContext } from "../pages/Dashboard";
 
 // redux
@@ -25,17 +23,37 @@ import { useDispatch, useSelector } from "react-redux";
 import type { RootState, AppDispatch } from "../redux/store";
 import { setSearchQuery } from "../redux/slice/SearchSlice";
 
+// --- Styled Components ---
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
   borderRadius: theme.shape.borderRadius,
-  backgroundColor: alpha(theme.palette.common.white, 0.15),
+  backgroundColor: alpha(theme.palette.common.white, 0.9),
   "&:hover": {
-    backgroundColor: alpha(theme.palette.common.white, 0.25),
+    backgroundColor: alpha(theme.palette.common.white, 1),
   },
   width: "100%",
+  maxWidth: "600px",
   [theme.breakpoints.up("sm")]: {
     width: "auto",
   },
+  flexGrow: 1,
+  display: "flex",
+  alignItems: "center",
+  height: "40px",
+}));
+
+const StyledInputBase = styled(InputBase)(({ theme }) => ({
+  width: "100%",
+  "& .MuiInputBase-input": {
+    padding: theme.spacing(1, 2, 1, 0),
+    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+    width: "100%",
+    fontSize: "1rem",
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "0.9rem",
+    },
+  },
+  borderRadius: theme.shape.borderRadius,
 }));
 
 const SearchIconWrapper = styled("div")(({ theme }) => ({
@@ -48,31 +66,13 @@ const SearchIconWrapper = styled("div")(({ theme }) => ({
   justifyContent: "center",
 }));
 
-const StyledInputBase = styled(InputBase)(({ theme }) => ({
-  "& .MuiInputBase-input": {
-    padding: theme.spacing(1, 1, 1, 0),
-    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-    transition: theme.transitions.create("width"),
-    width: "100%",
-    [theme.breakpoints.up("sm")]: {
-      width: "500px",
-    },
-    [theme.breakpoints.down("sm")]: {
-      width: "180px",
-    },
-  },
-}));
-
 const CustomSearchIcon = styled(SearchIcon)(() => ({
   color: "grey",
 }));
 
 const Header: React.FC = () => {
-  // redux
   const dispatch = useDispatch<AppDispatch>();
   const query = useSelector((state: RootState) => state.search.query);
-
-  // usecontext
   const { cartNumber } = useContext(QuntContext);
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -118,7 +118,6 @@ const Header: React.FC = () => {
       onClose={handleMenuClose}
       sx={{ mt: 2 }}
     >
-      {/* <MenuItem onClick={handleMenuClose}>Profile</MenuItem> */}
       <Link to={"/wishlist"} style={{ textDecoration: "none", color: "black" }}>
         <MenuItem onClick={handleMenuClose}>Wishlist</MenuItem>
       </Link>
@@ -137,7 +136,7 @@ const Header: React.FC = () => {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <Link to={"cart"} style={{ textDecoration: "none", color: "black" }}>
+      <Link to={"/cart"} style={{ textDecoration: "none", color: "black" }}>
         <MenuItem>
           <IconButton size="large" color="inherit">
             <Badge badgeContent={cartNumber} color="error">
@@ -159,8 +158,15 @@ const Header: React.FC = () => {
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static" sx={{ backgroundColor: "#A03037" }}>
-        <Toolbar className="header" sx={{ justifyContent: "space-between" }}>
-          <Box sx={{ display: "flex", alignItems: "center", flexGrow: 1 }}>
+        <Toolbar sx={{ justifyContent: "space-between", flexWrap: "wrap" }}>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              flexGrow: 1,
+              minWidth: 0,
+            }}
+          >
             <Link
               to={"/"}
               style={{
@@ -180,24 +186,25 @@ const Header: React.FC = () => {
                 variant="h6"
                 noWrap
                 component="div"
-                sx={{ display: { xs: "none", sm: "block" } }}
+                sx={{
+                  display: { xs: "none", sm: "block" },
+                  fontSize: { sm: "1rem", md: "1.25rem" },
+                }}
               >
                 BookStore
               </Typography>
             </Link>
 
-            <Search sx={{ marginLeft: "20px" }}>
+            <Search
+              sx={{ marginLeft: { xs: "10px", sm: "20px" }, flexGrow: 1 }}
+            >
               <SearchIconWrapper>
                 <CustomSearchIcon />
               </SearchIconWrapper>
               <StyledInputBase
                 placeholder="Search…"
                 inputProps={{ "aria-label": "search" }}
-                style={{
-                  backgroundColor: "white",
-                  color: "grey",
-                }}
-                // redux
+                style={{ backgroundColor: "white", color: "grey" }}
                 value={query}
                 onChange={(e) => dispatch(setSearchQuery(e.target.value))}
               />
@@ -259,6 +266,7 @@ const Header: React.FC = () => {
           </Box>
         </Toolbar>
       </AppBar>
+
       {renderMobileMenu}
       {renderMenu}
     </Box>
