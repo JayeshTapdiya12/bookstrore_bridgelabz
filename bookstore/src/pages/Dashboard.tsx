@@ -31,8 +31,8 @@ const Dashboard: React.FC = () => {
     console.log("heelo");
     console.log(bookcart);
     let number = 0;
-    if (bookcart.length !== 0) {
-      number = bookcart.reduce((total, book) => total + book.quantity, 0);
+    if (bookcart?.length !== 0) {
+      number = bookcart?.reduce((total, book) => total + book.quantity, 0);
     }
 
     setCartNumber(number);
