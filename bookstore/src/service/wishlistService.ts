@@ -28,7 +28,6 @@ interface GetWishList {
 
 export const getWishList = async (): Promise<AxiosResponse<GetWishList>> => {
   let res = await axios.get(`${baseUrl}/get`, headers);
-  console.log(res);
   return res;
 };
 
@@ -59,7 +58,6 @@ export const addWishlist = async (
   id: string
 ): Promise<AxiosResponse<AddWishlist>> => {
   let res = await axios.post(`${baseUrl}/add/${id}`, {}, headers);
-  console.log(res);
   return res;
 };
 
@@ -88,6 +86,5 @@ export const removeWishlist = async (
   id: string
 ): Promise<AxiosResponse<RemoveWishlist>> => {
   let res = await axios.post(`${baseUrl}/remove/${id}`, {}, headers);
-  console.log(res);
   return res;
 };
