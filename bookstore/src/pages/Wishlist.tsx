@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import { getWishList as getWishListService } from "../service/wishlistService";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
-import { Grid } from "@mui/material";
+// import { Grid } from "@mui/material";
+import Grid from "@mui/material/Grid";
 import { CircularProgress } from "@mui/material";
 import bookImmg from "../assets/Bookimg2.png";
 import { styled } from "@mui/system";
@@ -74,7 +75,7 @@ const Wishlist: React.FC = () => {
                 <h3>Book Name: {ele.bookname}</h3>
                 <p>Author: {ele.authorname}</p>
               </div>
-              <Grid item xs={6}>
+              <Grid>
                 <AddToBagButton
                   variant="contained"
                   onClick={() => {
