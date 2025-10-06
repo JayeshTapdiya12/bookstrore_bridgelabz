@@ -1,6 +1,7 @@
 import axios, { type AxiosResponse } from "axios";
 
-const baseUrl = "http://localhost:3001/api/v1/order";
+// const baseUrl = "http://localhost:3001/api/v1/order";
+const baseUrl = "https://booksbooking.onrender.com/api/v1/order";
 
 const token = localStorage.getItem("token");
 const headers = { headers: { Authorization: "bearer " + token } };
