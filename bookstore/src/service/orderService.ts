@@ -35,7 +35,6 @@ interface AddOrder {
 
 export const addOrder = async (): Promise<AxiosResponse<AddOrder>> => {
   const res = await axios.post(`${baseUrl}/addorder`, {}, headers);
-  console.log(res);
   localStorage.setItem("orderId", res?.data?.order?.orderId);
   return res;
 };
