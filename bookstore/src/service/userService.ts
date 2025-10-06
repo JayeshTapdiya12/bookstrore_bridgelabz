@@ -1,6 +1,7 @@
 import axios, { type AxiosResponse } from "axios";
 
-const baseUrl = "http://localhost:3001/api/v1/users";
+// const baseUrl = "http://localhost:3001/api/v1/users";
+const baseUrl = "https://booksbooking.onrender.com/api/v1/users";
 
 interface loginRes {
   success: string;
