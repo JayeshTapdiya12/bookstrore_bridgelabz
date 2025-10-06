@@ -9,9 +9,8 @@ import {
 } from "../service/cartService";
 import { addWishlist as addWishService } from "../service/wishlistService";
 import type { Note } from "../service/bookSerivce";
-// import Grid from "@mui/material/Grid";
-// import Grid from "@mui/material/Unstable_Grid2";
-import { Grid2 as Grid } from "@mui/material";
+
+import Grid from "@mui/material/Grid";
 
 import {
   CardContent,
@@ -110,7 +109,7 @@ const SinglePageBook: React.FC = () => {
       const cartRes = await getCartService();
       const cartBooks = cartRes?.data?.data?.book || [];
       const found = cartBooks.find((b: any) => b?._id === id);
-      if (found) setExistb(found);
+      if (found) setExistb(found as Note);
 
       setLoading(false);
     } catch (error) {
@@ -131,7 +130,7 @@ const SinglePageBook: React.FC = () => {
       const found = cartBooks.find(
         (b: any) => b?._id?.toString() === id?.toString()
       );
-      if (found) setExistb(found);
+      if (found) setExistb(found as Note);
     } catch (error) {
       console.log(error);
     }
@@ -184,7 +183,7 @@ const SinglePageBook: React.FC = () => {
 
           <Grid container spacing={4} pt={5}>
             {/* Left Section */}
-            <Grid item xs={12} md={4}>
+            <Grid>
               {bookId && (
                 <Card sx={{ boxShadow: 3, p: 2, textAlign: "center" }}>
                   <CardMedia
@@ -200,7 +199,7 @@ const SinglePageBook: React.FC = () => {
                   />
                   <CardContent>
                     <Grid container spacing={15}>
-                      <Grid item xs={6}>
+                      <Grid>
                         {existb?._id === bookId._id && counter > 0 ? (
                           <div className="cart-quantity">
                             <button
@@ -236,7 +235,7 @@ const SinglePageBook: React.FC = () => {
                           </AddToBagButton>
                         )}
                       </Grid>
-                      <Grid item xs={6}>
+                      <Grid>
                         {/* {existwish?._id === bookId?._id ? (
                           <AddToBagButton variant="contained">
                             Already in wishlist
@@ -257,7 +256,7 @@ const SinglePageBook: React.FC = () => {
               )}
             </Grid>
 
-            <Grid item xs={12} md={8}>
+            <Grid>
               {bookId && (
                 <>
                   <Typography variant="h5" fontWeight="bold" gutterBottom>
