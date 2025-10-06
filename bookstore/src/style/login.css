@@ -1,3 +1,4 @@
+/* Main container styles for login/signup */
 .signup-container,
 .login-container {
   display: flex;
@@ -137,7 +138,9 @@
   font-weight: bold;
 }
 
-@media (max-width: 768px) {
+/* Responsive Media Queries */
+@media (max-width: 1024px) {
+  /* Adjust the container layout for tablets and below */
   .signup-container,
   .login-container {
     flex-direction: column;
@@ -187,34 +190,43 @@
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 768px) {
+  /* Mobile view adjustments */
+  .signup-container,
+  .login-container {
+    flex-direction: column;
+    margin-top: 5vw;
+    width: 85%;
+  }
+
+  .signup-left,
+  .login-left {
+    width: 100%;
+    padding: 10px;
+  }
+
+  .signup-right,
+  .login-right {
+    width: 100%;
+    padding: 15px;
+  }
+
   .signup-left img,
   .login-left img {
     width: 50%;
   }
 
-  .signup-container,
-  .login-container {
-    margin-top: 5vw;
-    width: 85%;
-  }
-
-  .signup-right,
-  .login-right {
-    padding: 15px;
-  }
-
   .input-group input {
-    padding: 12px;
+    padding: 14px;
   }
 
   .signup-button,
   .login-button {
-    font-size: 16px;
+    font-size: 14px;
   }
 
   .social-button {
-    font-size: 14px;
+    font-size: 12px;
   }
 
   .or-divider {
@@ -222,9 +234,47 @@
   }
 }
 
+/* Small mobile devices (max-width: 480px) */
+@media (max-width: 480px) {
+  .signup-container,
+  .login-container {
+    margin-top: 5vw;
+    width: 90%;
+  }
+
+  .signup-left img,
+  .login-left img {
+    width: 50%;
+  }
+
+  .input-group input {
+    padding: 14px;
+  }
+
+  .signup-button,
+  .login-button {
+    font-size: 14px;
+  }
+
+  .social-button {
+    font-size: 12px;
+  }
+
+  .social-login {
+    flex-direction: column;
+    margin-top: 15px;
+  }
+
+  .social-button {
+    margin-bottom: 10px;
+  }
+}
+
+/* Tabs styling */
 .MuiTabs-root {
   padding-bottom: 16px;
 }
+
 .MuiTab-root {
   font-size: 16px;
   font-weight: bold;

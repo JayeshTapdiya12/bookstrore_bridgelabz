@@ -108,34 +108,33 @@ const Login: React.FC = () => {
               src={image}
               alt="Online Book Shopping"
               className="login-image"
-              style={{ borderRadius: "15vw" }}
             />
             <p>ONLINE BOOK SHOPPING</p>
           </div>
           <div className="login-right">
             <div className="login-box">
-              {/* <h2>LOGIN</h2> */}
               <Tabs
                 value={value}
                 onChange={handleTabChange}
                 aria-label="login-signup-tabs"
+                className="tabs"
               >
                 <Tab
                   label="Login"
                   {...a11yProps(0)}
                   style={{
-                    fontSize: "20px",
-                    fontWeight: "bold",
+                    fontWeight: "900",
+                    fontSize: "15px",
                     color: "black",
                   }}
                 />
                 <Tab
                   label="SignUp"
                   {...a11yProps(1)}
-                  style={{ marginLeft: "180px" }}
+                  style={{ marginLeft: "100px", color: "black" }}
                 />
               </Tabs>
-              <div className="input-group" style={{ marginTop: "30px" }}>
+              <div className="input-group">
                 <label htmlFor="login-email">Email Id</label>
                 <input
                   type="email"
@@ -170,33 +169,34 @@ const Login: React.FC = () => {
               src={image}
               alt="Online Book Shopping"
               className="signup-image"
-              style={{ borderRadius: "15vw" }}
             />
             <p>ONLINE BOOK SHOPPING</p>
           </div>
           <div className="signup-right">
             <div className="signup-box">
-              {/* <h2>SIGNUP</h2> */}
               <Tabs
                 value={value}
                 onChange={handleTabChange}
                 aria-label="login-signup-tabs"
-                style={{ gap: "20px" }}
               >
-                <Tab label="Login" {...a11yProps(0)} />
+                <Tab
+                  label="Login"
+                  {...a11yProps(0)}
+                  style={{ color: "black" }}
+                />
                 <Tab
                   label="SignUp"
                   {...a11yProps(1)}
                   style={{
-                    marginLeft: "180px",
-                    fontSize: "20px",
-                    fontWeight: "bold",
+                    fontWeight: "900",
+                    marginLeft: "100px",
+                    fontSize: "15px",
                     color: "black",
                   }}
                 />
               </Tabs>
               <div className="input-group">
-                <label htmlFor="signup-firstname"> First Name</label>
+                <label htmlFor="signup-firstname">First Name</label>
                 <input
                   type="text"
                   id="signup-firstname"
