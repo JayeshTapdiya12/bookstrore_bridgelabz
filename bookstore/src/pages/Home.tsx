@@ -154,11 +154,44 @@ const Home: React.FC = () => {
                 </span>
               </h2>
               <div className="sortbutton" style={{ paddingTop: "25px" }}>
-                <select name="" id="" onChange={sortting}>
-                  <option value="normal">Sort by relevance</option>
-                  <option value="lowPrice">Price: Low to High</option>
-                  <option value="HighPrice">Price: High to Low</option>
-                </select>
+                <Grid
+                  container
+                  justifyContent="flex-end"
+                  alignItems="center"
+                  sx={{ width: "100%", margin: 0 }}
+                >
+                  <Grid
+                    sx={{
+                      display: "flex",
+                      justifyContent: "flex-end",
+                    }}
+                  >
+                    <Box
+                      sx={{
+                        width: "100%",
+                        maxWidth: "200px",
+                      }}
+                    >
+                      <select
+                        name="sort"
+                        onChange={sortting}
+                        style={{
+                          width: "100%",
+                          padding: "8px",
+                          borderRadius: "4px",
+                          border: "1px solid #ccc",
+                          fontSize: "14px",
+                          appearance: "auto",
+                          height: "35px",
+                        }}
+                      >
+                        <option value="normal">Sort by relevance</option>
+                        <option value="lowPrice">Price: Low to High</option>
+                        <option value="HighPrice">Price: High to Low</option>
+                      </select>
+                    </Box>
+                  </Grid>
+                </Grid>
               </div>
             </div>
             <Grid container spacing={3}>
