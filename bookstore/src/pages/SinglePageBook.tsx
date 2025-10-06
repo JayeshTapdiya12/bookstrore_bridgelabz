@@ -8,7 +8,7 @@ import {
   rmeoveCart as RemoveCartService,
 } from "../service/cartService";
 import { addWishlist as addWishService } from "../service/wishlistService";
-
+import type { Note } from "../service/bookService";
 import {
   CardContent,
   Container,
@@ -37,6 +37,22 @@ interface Book {
   discountPrice: number;
   bookImage: string;
 }
+// interface Note{
+//     // note: {
+//     _id: string;
+//     description: string;
+//     discountPrice: number;
+//     bookImage: null | string;
+//     admin_user_id: string;
+//     bookName: string;
+//     author: string;
+//     quantity: number;
+//     price: number;
+//     createdAt: string;
+//     updatedAt: string;
+//     __v: number;
+//   // };
+// }
 
 const AddToBagButton = styled(Button)({
   backgroundColor: "#b71c1c",
@@ -91,8 +107,8 @@ const SubmitButton = styled(Button)({
 
 const SinglePageBook: React.FC = () => {
   const { id } = useParams();
-  const [bookId, setBookId] = useState<Book | null>(null);
-  const [existb, setExistb] = useState<Book | null>(null);
+  const [bookId, setBookId] = useState<Note | null>(null);
+  const [existb, setExistb] = useState<Note | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const { refreshCart } = useContext(QuntContext);
   const [counter, setCounter] = useState<number>(0);
