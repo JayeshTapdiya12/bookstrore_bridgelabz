@@ -6,7 +6,7 @@ const baseUrl = "https://booksbooking.onrender.com/api/v1/books/wishlist";
 const token = localStorage.getItem("token");
 const headers = { headers: { Authorization: "bearer " + token } };
 
-interface GetWishList {
+export interface GetWishList {
   message: string;
   wishlist: {
     _id: string;
