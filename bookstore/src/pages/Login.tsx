@@ -9,6 +9,8 @@ import image from "../assets/2766594.png";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert, { AlertColor } from "@mui/material/Alert";
 
 interface CustomTabPanelProps {
   children?: React.ReactNode;
@@ -42,16 +44,30 @@ function a11yProps(index: number) {
   };
 }
 
+const Alert = React.forwardRef<HTMLDivElement, any>(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
+
 const Login: React.FC = () => {
   const navigate = useNavigate();
+  const [value, setValue] = useState(0);
 
-  const [value, setValue] = useState(0); // Tabs state
+  // Snackbar state
+  const [snackbar, setSnackbar] = useState<{
+    open: boolean;
+    message: string;
+    severity: AlertColor;
+  }>({
+    open: false,
+    message: "",
+    severity: "info",
+  });
 
-  // Login form states
+  // Login states
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  // Signup form states
+  // Signup states
   const [fullName, setFullName] = useState("");
   const [lastname, setLastname] = useState("");
   const [signupEmail, setSignupEmail] = useState("");
@@ -62,23 +78,48 @@ const Login: React.FC = () => {
     setValue(newValue);
   };
 
+  const handleCloseSnackbar = (
+    event?: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
+    if (reason === "clickaway") return;
+    setSnackbar({ ...snackbar, open: false });
+  };
+
   const sendLogin = async () => {
     if (!email || !password) {
-      alert("Please enter both email and password");
+      setSnackbar({
+        open: true,
+        message: "Please enter both email and password.",
+        severity: "warning",
+      });
       return;
     }
     try {
-      const res = await loginService(email, password);
-      navigate("/");
+      await loginService(email, password);
+      setSnackbar({
+        open: true,
+        message: "Login successful!",
+        severity: "success",
+      });
+      setTimeout(() => navigate("/"), 1000);
     } catch (error) {
       console.error("Login failed:", error);
-      alert("Login failed. Please check your credentials.");
+      setSnackbar({
+        open: true,
+        message: "Login failed. Please check your credentials.",
+        severity: "error",
+      });
     }
   };
 
   const sendSign = async () => {
     if (!fullName || !lastname || !signupEmail || !signupPassword || !phone) {
-      alert("Please enter all signup details.");
+      setSnackbar({
+        open: true,
+        message: "Please enter all signup details.",
+        severity: "warning",
+      });
       return;
     }
     try {
@@ -89,16 +130,39 @@ const Login: React.FC = () => {
         signupPassword,
         phone
       );
-      alert(res.data.message);
-      navigate("/login");
+      setSnackbar({
+        open: true,
+        message: res.data.message || "Signup successful!",
+        severity: "success",
+      });
+      setTimeout(() => navigate("/login"), 1000);
     } catch (error) {
       console.error("Signup failed:", error);
-      alert("Signup failed. Please try again.");
+      setSnackbar({
+        open: true,
+        message: "Signup failed. Please try again.",
+        severity: "error",
+      });
     }
   };
 
   return (
     <Box sx={{ width: "100%" }}>
+      <Snackbar
+        open={snackbar.open}
+        autoHideDuration={3000}
+        onClose={handleCloseSnackbar}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+      >
+        <Alert
+          onClose={handleCloseSnackbar}
+          severity={snackbar.severity}
+          sx={{ width: "100%" }}
+        >
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
+
       <CustomTabPanel value={value} index={0}>
         <div className="login-container">
           <div className="login-left">
@@ -132,6 +196,7 @@ const Login: React.FC = () => {
                   style={{ marginLeft: "100px", color: "black" }}
                 />
               </Tabs>
+
               <div className="input-group">
                 <label htmlFor="login-email">Email Id</label>
                 <input
@@ -172,11 +237,7 @@ const Login: React.FC = () => {
           </div>
           <div className="signup-right">
             <div className="signup-box">
-              <Tabs
-                value={value}
-                onChange={handleTabChange}
-                aria-label="login-signup-tabs"
-              >
+              <Tabs value={value} onChange={handleTabChange}>
                 <Tab
                   label="Login"
                   {...a11yProps(0)}
@@ -193,6 +254,7 @@ const Login: React.FC = () => {
                   }}
                 />
               </Tabs>
+
               <div className="input-group">
                 <label htmlFor="signup-firstname">First Name</label>
                 <input
