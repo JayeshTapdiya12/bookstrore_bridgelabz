@@ -7,9 +7,12 @@ import {
   addCart as updateQuantityService,
   rmeoveCart as RemoveCartService,
 } from "../service/cartService";
-import { addWishlist as addWishService } from "../service/wishlistService";
+import {
+  addWishlist as addWishService,
+  getWishList as getWishlistService,
+} from "../service/wishlistService";
 import type { Note } from "../service/bookSerivce";
-
+import type { GetWishList as wishlistinterface } from "../service/wishlistService";
 import Grid from "@mui/material/Grid";
 
 import {
@@ -29,17 +32,13 @@ import { styled } from "@mui/system";
 import { QuntContext } from "../pages/Dashboard";
 import "../style/single.css";
 import BookImage from "../assets/Bookimg2.png";
-
-interface Book {
+type WishBook = {
   _id: string;
-  bookName: string;
-  author: string;
-  description: string;
-  quantity: number;
-  price: number;
-  discountPrice: number;
-  bookImage: string;
-}
+  bookId: string;
+  bookname: string;
+  authorname: string;
+  image: string;
+};
 
 const AddToBagButton = styled(Button)({
   backgroundColor: "#b71c1c",
@@ -99,11 +98,21 @@ const SinglePageBook: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const { refreshCart } = useContext(QuntContext);
   const [counter, setCounter] = useState<number>(0);
+  // const [wishexist, setWishexist] = useState<wishBook | null>(null);
+  const [wishexist, setWishexist] = useState<WishBook[]>([]);
 
   const getBook = async () => {
     try {
       if (!id) return;
       const res = await getBookById(id);
+      // const Getwishlist = await getWishlistService();
+      // console.log(Getwishlist);
+
+      const Getwishlist = await getWishlistService();
+      const wishBook = Getwishlist?.data?.wishlist?.book || [];
+      setWishexist(wishBook);
+      console.log(wishexist);
+
       setBookId(res?.data?.note);
 
       const cartRes = await getCartService();
@@ -229,19 +238,19 @@ const SinglePageBook: React.FC = () => {
                         )}
                       </Grid>
                       <Grid>
-                        {/* {existwish?._id === bookId?._id ? (
-                          <AddToBagButton variant="contained">
+                        {wishexist?.some((b) => b.bookId === bookId._id) ? (
+                          <AddToBagButton variant="contained" disabled>
                             Already in wishlist
                           </AddToBagButton>
-                        ) : ( */}
-                        <AddToBagButton
-                          variant="contained"
-                          onClick={addwish}
-                          style={{ borderRadius: "10px" }}
-                        >
-                          WISHLIST
-                        </AddToBagButton>
-                        {/* )} */}
+                        ) : (
+                          <AddToBagButton
+                            variant="contained"
+                            onClick={addwish}
+                            style={{ borderRadius: "10px" }}
+                          >
+                            WISHLIST
+                          </AddToBagButton>
+                        )}
                       </Grid>
                     </Grid>
                   </CardContent>{" "}
@@ -276,7 +285,7 @@ const SinglePageBook: React.FC = () => {
                       4.5 ★
                     </Button>
                     <Typography variant="body2" color="textSecondary">
-                      (20)
+                      {bookId.quantity}
                     </Typography>
                   </Box>
 
