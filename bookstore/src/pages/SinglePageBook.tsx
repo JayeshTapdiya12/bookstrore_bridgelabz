@@ -105,13 +105,10 @@ const SinglePageBook: React.FC = () => {
     try {
       if (!id) return;
       const res = await getBookById(id);
-      // const Getwishlist = await getWishlistService();
-      // console.log(Getwishlist);
 
       const Getwishlist = await getWishlistService();
       const wishBook = Getwishlist?.data?.wishlist?.book || [];
       setWishexist(wishBook);
-      console.log(wishexist);
 
       setBookId(res?.data?.note);
 
