@@ -43,7 +43,7 @@
 
 .signup-box,
 .login-box {
-  max-width: 100%;
+  max-width: 80%;
 }
 
 .input-group {
@@ -57,7 +57,7 @@
 }
 
 .input-group input {
-  width: 100%;
+  width: 90%;
   padding: 10px;
   border-radius: 5px;
   border: 1px solid #ccc;
@@ -65,7 +65,7 @@
 
 .signup-button,
 .login-button {
-  width: 100%;
+  width: 98%;
   padding: 12px;
   background-color: #a03037;
   border: none;
@@ -138,9 +138,7 @@
   font-weight: bold;
 }
 
-/* Responsive Media Queries */
 @media (max-width: 1024px) {
-  /* Adjust the container layout for tablets and below */
   .signup-container,
   .login-container {
     flex-direction: column;
@@ -177,6 +175,7 @@
 
   .signup-button,
   .login-button {
+    width: 100%;
     font-size: 16px;
   }
 
