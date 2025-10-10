@@ -3,9 +3,6 @@ import axios, { type AxiosResponse } from "axios";
 // const baseUrl = "http://localhost:3001/api/v1/books";
 const baseUrl = "https://booksbooking.onrender.com/api/v1/books";
 
-const token = localStorage.getItem("token");
-const headers = { headers: { Authorization: "bearer " + token } };
-
 interface bookResp {
   success: boolean;
   message: string;
@@ -26,6 +23,8 @@ interface bookResp {
 }
 
 export const getBook = async (): Promise<AxiosResponse<bookRespById>> => {
+  const token = localStorage.getItem("token");
+  const headers = { headers: { Authorization: "bearer " + token } };
   let res = await axios.get(baseUrl, headers);
   return res;
 };
@@ -53,6 +52,8 @@ interface bookRespById {
 export const getBookById = async (
   id: string
 ): Promise<AxiosResponse<bookRespById>> => {
+  const token = localStorage.getItem("token");
+  const headers = { headers: { Authorization: "bearer " + token } };
   let res = await axios.get(`${baseUrl}/${id}`, headers);
   return res;
 };
