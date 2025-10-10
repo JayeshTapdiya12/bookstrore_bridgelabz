@@ -248,7 +248,7 @@ const Login: React.FC = () => {
                   {...a11yProps(1)}
                   style={{
                     fontWeight: "900",
-                    marginLeft: "100px",
+                    marginLeft: "70px",
                     fontSize: "15px",
                     color: "black",
                   }}
