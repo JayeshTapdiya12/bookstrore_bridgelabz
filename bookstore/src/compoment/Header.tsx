@@ -121,6 +121,9 @@ const Header: React.FC = () => {
       <Link to={"/wishlist"} style={{ textDecoration: "none", color: "black" }}>
         <MenuItem onClick={handleMenuClose}>Wishlist</MenuItem>
       </Link>
+      <Link to={"/allorder"} style={{ textDecoration: "none", color: "black" }}>
+        <MenuItem onClick={handleMenuClose}>All Order</MenuItem>
+      </Link>
       <MenuItem onClick={logout}>Logout</MenuItem>
     </Menu>
   );
