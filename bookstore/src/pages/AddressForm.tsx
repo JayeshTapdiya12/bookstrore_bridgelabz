@@ -10,6 +10,9 @@ import {
   MenuItem,
 } from "@mui/material";
 
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert, { AlertColor } from "@mui/material/Alert";
+
 interface Address {
   type: string;
   fullName: string;
@@ -22,7 +25,9 @@ interface Address {
 interface AddressFormProps {
   setisOpen2: (open: boolean) => void;
 }
-
+const Alert = React.forwardRef<HTMLDivElement, any>(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 const AddressForm: React.FC<AddressFormProps> = ({ setisOpen2 }) => {
   const loadAddresses = () => {
     const savedAddresses = localStorage.getItem("addresses");
@@ -34,6 +39,16 @@ const AddressForm: React.FC<AddressFormProps> = ({ setisOpen2 }) => {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
   const [newAddressType, setNewAddressType] = useState<string>("");
 
+  const [snackbar, setSnackbar] = useState<{
+    open: boolean;
+    message: string;
+    severity: AlertColor;
+  }>({
+    open: false,
+    message: "",
+    severity: "info",
+  });
+
   const toggleOpen = (index: number) => {
     setOpenIndex(openIndex === index ? null : index);
     setSelected(index);
@@ -41,7 +56,12 @@ const AddressForm: React.FC<AddressFormProps> = ({ setisOpen2 }) => {
 
   const handleAddAddress = () => {
     if (!newAddressType) {
-      alert("Please select whether it's a 'Work' or 'Home' address");
+      setSnackbar({
+        open: true,
+        message: "Please select whether it's a 'Work' or 'Home' address.",
+        severity: "warning",
+      });
+      // alert("Please select whether it's a 'Work' or 'Home' address");
       return;
     }
 
@@ -57,6 +77,11 @@ const AddressForm: React.FC<AddressFormProps> = ({ setisOpen2 }) => {
     const updatedAddresses = [...addresses, newAddress];
     setAddresses(updatedAddresses);
     localStorage.setItem("addresses", JSON.stringify(updatedAddresses));
+    setSnackbar({
+      open: true,
+      message: "Address saved for order!",
+      severity: "success",
+    });
     setOpenIndex(updatedAddresses.length - 1);
     setSelected(updatedAddresses.length - 1);
     setNewAddressType("");
@@ -71,7 +96,12 @@ const AddressForm: React.FC<AddressFormProps> = ({ setisOpen2 }) => {
 
   const handleContinue = (index: number | null) => {
     if (index === null) {
-      alert("Please select an address before continuing.");
+      setSnackbar({
+        open: true,
+        message: "Please select an address before continuing.",
+        severity: "warning",
+      });
+      // alert("Please select an address before continuing.");
       return;
     }
 
@@ -83,21 +113,36 @@ const AddressForm: React.FC<AddressFormProps> = ({ setisOpen2 }) => {
       JSON.stringify(selectedAddress)
     );
     setisOpen2(true);
-    alert("Addresses saved for order!");
+    // alert("Addresses saved for order!");
+    setSnackbar({
+      open: true,
+      message: "Address saved for order!",
+      severity: "success",
+    });
   };
 
   return (
-    <Box
-      sx={{ width: "600px", margin: "20px auto" }}
-      className="cart-container"
-      style={{ width: "80%" }}
-    >
+    <Box sx={{ width: "600px", margin: "20px auto" }} style={{ width: "80%" }}>
       <Box sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}>
         <h3>Customer Details</h3>
         <Button variant="outlined" onClick={handleAddAddress}>
           Add New Address
         </Button>
       </Box>
+      <Snackbar
+        open={snackbar.open}
+        autoHideDuration={3000}
+        onClose={() => setSnackbar({ ...snackbar, open: false })}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+      >
+        <Alert
+          onClose={() => setSnackbar({ ...snackbar, open: false })}
+          severity={snackbar.severity}
+          sx={{ width: "100%" }}
+        >
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
 
       {!newAddressType && (
         <Box sx={{ mb: 2 }}>
@@ -186,6 +231,8 @@ const AddressForm: React.FC<AddressFormProps> = ({ setisOpen2 }) => {
         variant="contained"
         color="primary"
         onClick={() => handleContinue(selected)}
+        sx={{ marginLeft: "auto", marginTop: "20px" }}
+        style={{ display: "flex", flexDirection: "column" }}
       >
         CONTINUE
       </Button>
