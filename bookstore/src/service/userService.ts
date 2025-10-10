@@ -1,6 +1,5 @@
 import axios, { type AxiosResponse } from "axios";
 
-// const baseUrl = "http://localhost:3001/api/v1/users";
 const baseUrl = "https://booksbooking.onrender.com/api/v1/users";
 
 interface loginRes {
@@ -18,9 +17,8 @@ export const Login = async (
     password,
   };
   let res = await axios.post<loginRes>(`${baseUrl}/login`, data);
-
-  if (res?.data) {
-    localStorage.setItem("token", res?.data?.data);
+  if (res?.data?.data !== "") {
+    await localStorage.setItem("token", res?.data?.data);
   }
   return res;
 };
