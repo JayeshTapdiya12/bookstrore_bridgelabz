@@ -9,6 +9,7 @@ import Cart from "../pages/Cart";
 import Home from "../pages/Home";
 import Order from "../pages/Order";
 import Wishlist from "../pages/Wishlist";
+import OrderPage from "../pages/OrderPage";
 const Router: React.FC = () => {
   return (
     <>
@@ -34,6 +35,7 @@ const Router: React.FC = () => {
             />
             <Route path="/order" element={<Order />} />
             <Route path="/wishlist" element={<Wishlist />} />
+            <Route path="/allorder" element={<OrderPage />} />
           </Route>
           <Route
             path="/login"
