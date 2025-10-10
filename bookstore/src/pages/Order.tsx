@@ -9,8 +9,8 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 
-function createData(name: string, calories: number, fat: string) {
-  return { name, calories, fat };
+function createData(email: string, phone: number, address: string) {
+  return { email, phone, address };
 }
 const rows = [
   createData(
@@ -54,14 +54,14 @@ const Order: React.FC = () => {
               <TableBody>
                 {rows.map((row) => (
                   <TableRow
-                    key={row.name}
+                    key={row.email}
                     sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                   >
                     <TableCell component="th" scope="row">
-                      {row.name}
+                      {row.email}
                     </TableCell>
-                    <TableCell align="left">{row.calories}</TableCell>
-                    <TableCell align="left">{row.fat}</TableCell>
+                    <TableCell align="left">{row.phone}</TableCell>
+                    <TableCell align="left">{row.address}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
