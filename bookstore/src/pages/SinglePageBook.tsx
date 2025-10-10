@@ -98,6 +98,8 @@ const SinglePageBook: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const { refreshCart } = useContext(QuntContext);
   const [counter, setCounter] = useState<number>(0);
+  // const [extcounter, setExtCounter] = useState<number>(0);
+
   // const [wishexist, setWishexist] = useState<wishBook | null>(null);
   const [wishexist, setWishexist] = useState<WishBook[]>([]);
 
@@ -105,17 +107,19 @@ const SinglePageBook: React.FC = () => {
     try {
       if (!id) return;
       const res = await getBookById(id);
+      const cartRes = await getCartService();
+
+      const cartBooks = cartRes?.data?.data?.book || [];
+      const found = cartBooks.find((b: any) => b?._id === id);
+      if (found) setExistb(found as Note);
+
+      // const res = await getBookById(id);
 
       const Getwishlist = await getWishlistService();
       const wishBook = Getwishlist?.data?.wishlist?.book || [];
       setWishexist(wishBook);
 
       setBookId(res?.data?.note);
-
-      const cartRes = await getCartService();
-      const cartBooks = cartRes?.data?.data?.book || [];
-      const found = cartBooks.find((b: any) => b?._id === id);
-      if (found) setExistb(found as Note);
 
       setLoading(false);
     } catch (error) {
@@ -148,6 +152,14 @@ const SinglePageBook: React.FC = () => {
   useEffect(() => {
     getBook();
   }, [id]);
+
+  useEffect(() => {
+    if (existb) {
+      setCounter(existb.quantity);
+    } else {
+      setCounter(0);
+    }
+  }, [existb]);
 
   const handleQuantityChange = async (
     bookId: string,
@@ -197,15 +209,22 @@ const SinglePageBook: React.FC = () => {
                     }}
                   />
                   <CardContent>
-                    <Grid container spacing={15}>
+                    <Grid container spacing={4}>
                       <Grid>
                         {existb?._id === bookId._id && counter > 0 ? (
-                          <div className="cart-quantity">
+                          <Box display="flex" alignItems="center" gap={2}>
                             <button
                               onClick={() =>
                                 handleQuantityChange(bookId._id, "decrement")
                               }
-                              style={{ borderRadius: "10px" }}
+                              style={{
+                                padding: "6px 12px",
+                                borderRadius: "8px",
+                                backgroundColor: "#f5f5f5",
+                                border: "1px solid #ccc",
+                                fontSize: "18px",
+                                cursor: "pointer",
+                              }}
                             >
                               -
                             </button>
@@ -213,44 +232,85 @@ const SinglePageBook: React.FC = () => {
                               type="text"
                               value={counter}
                               readOnly
-                              style={{ borderRadius: "10px" }}
+                              style={{
+                                width: "50px",
+                                padding: "6px",
+                                textAlign: "center",
+                                borderRadius: "8px",
+                                border: "1px solid #ccc",
+                                fontSize: "16px",
+                                backgroundColor: "#f9f9f9",
+                              }}
                             />
                             <button
                               onClick={() =>
                                 handleQuantityChange(bookId._id, "increment")
                               }
-                              style={{ borderRadius: "10px" }}
+                              style={{
+                                padding: "6px 12px",
+                                borderRadius: "8px",
+                                backgroundColor: "#f5f5f5",
+                                border: "1px solid #ccc",
+                                fontSize: "18px",
+                                cursor: "pointer",
+                              }}
                             >
                               +
                             </button>
-                          </div>
+                          </Box>
                         ) : (
                           <AddToBagButton
                             variant="contained"
                             onClick={adding}
-                            style={{ borderRadius: "10px" }}
+                            style={{
+                              borderRadius: "8px",
+                              padding: "12px 24px",
+                              fontSize: "16px",
+                              width: "100%",
+                              backgroundColor: "#b71c1c",
+                              color: "#fff",
+                            }}
                           >
                             ADD TO BAG
                           </AddToBagButton>
                         )}
                       </Grid>
+
                       <Grid>
                         {wishexist?.some((b) => b.bookId === bookId._id) ? (
-                          <AddToBagButton variant="contained" disabled>
+                          <AddToBagButton
+                            variant="contained"
+                            disabled
+                            style={{
+                              borderRadius: "8px",
+                              padding: "12px 24px",
+                              fontSize: "16px",
+                              width: "100%",
+                              backgroundColor: "#757575",
+                              color: "#fff",
+                            }}
+                          >
                             Already in wishlist
                           </AddToBagButton>
                         ) : (
                           <AddToBagButton
                             variant="contained"
                             onClick={addwish}
-                            style={{ borderRadius: "10px" }}
+                            style={{
+                              borderRadius: "8px",
+                              padding: "12px 24px",
+                              fontSize: "16px",
+                              width: "100%",
+                              backgroundColor: "#b71c1c",
+                              color: "#fff",
+                            }}
                           >
                             WISHLIST
                           </AddToBagButton>
                         )}
                       </Grid>
                     </Grid>
-                  </CardContent>{" "}
+                  </CardContent>
                 </Card>
               )}
             </Grid>
