@@ -188,11 +188,12 @@ const Cart: React.FC = () => {
 
       {cart?.length !== 0 ? (
         <>
-          <div onClick={() => setIsOpen(!isOpen)} className="cart-container">
-            {isOpen ? "Address Details" : "Address Details"}
+          <div className="cart-container">
+            <div onClick={() => setIsOpen(!isOpen)}>
+              {isOpen ? "Address Details" : "Address Details"}
+            </div>
+            {isOpen && <AddressForm setisOpen2={setIsOpen2} />}
           </div>
-
-          {isOpen && <AddressForm setisOpen2={setIsOpen2} />}
           <div
             onClick={() => setIsOpen2(!isOpen2)}
             className="cart-container"
