@@ -15,7 +15,7 @@ import {
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import Bookimg from "../assets/Bookimg2.png";
-import Fotter from "../compoment/Fotter";
+// import Fotter from "../compoment/Fotter";
 import "../style/home.css";
 
 // redux
@@ -255,7 +255,7 @@ const Home: React.FC = () => {
           </>
         )}
       </Container>
-      <Fotter />
+      {/* <Fotter /> */}
       <Outlet />
     </>
   );
