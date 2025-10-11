@@ -59,10 +59,7 @@ const OrderPage: React.FC = () => {
           <div className="order-container ">
             <h4 style={{ color: "grey" }}>
               Home/
-              <span style={{ color: "black", fontSize: "15px" }}>
-                {" "}
-                (Wishlist)
-              </span>
+              <span style={{ color: "black", fontSize: "15px" }}> (Order)</span>
             </h4>
             <div style={{ fontFamily: "Arial, sans-serif", padding: "20px" }}>
               <h2>Orders</h2>
