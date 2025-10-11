@@ -197,11 +197,17 @@ const Home: React.FC = () => {
             <Grid container spacing={3}>
               {paginatedBooks.map((book) => (
                 <Grid key={book._id} size={{ xs: 12, sm: 6, md: 3 }}>
-                  <Link
-                    to={`book/${book._id}`}
-                    style={{ textDecoration: "none", color: "inherit" }}
+                  <Card
+                    sx={{ height: "100%", boxShadow: 3, position: "relative" }}
                   >
-                    <Card sx={{ height: "100%", boxShadow: 3 }}>
+                    <Link
+                      to={book.quantity > 0 ? `book/${book._id}` : "#"}
+                      style={{
+                        textDecoration: "none",
+                        color: "inherit",
+                        pointerEvents: book.quantity === 0 ? "none" : "auto",
+                      }}
+                    >
                       <CardMedia
                         component="img"
                         height="auto"
@@ -212,8 +218,29 @@ const Home: React.FC = () => {
                           height: "auto",
                           margin: "25%",
                           backgroundColor: "grey",
+                          opacity: book.quantity === 0 ? 0.4 : 1,
                         }}
                       />
+
+                      {book.quantity === 0 && (
+                        <Box
+                          sx={{
+                            position: "absolute",
+                            top: "45%",
+                            left: "50%",
+                            transform: "translate(-50%, -50%)",
+                            backgroundColor: "rgba(0, 0, 0, 0.7)",
+                            color: "white",
+                            padding: "8px 16px",
+                            borderRadius: "6px",
+                            fontWeight: "bold",
+                            fontSize: "14px",
+                          }}
+                        >
+                          SOLD OUT
+                        </Box>
+                      )}
+
                       <CardContent>
                         <Typography variant="h6" gutterBottom>
                           {book.bookName}
@@ -234,8 +261,8 @@ const Home: React.FC = () => {
                           <OldPrice variant="body2">Rs. {book.price}</OldPrice>
                         </Price>
                       </CardContent>
-                    </Card>
-                  </Link>
+                    </Link>
+                  </Card>
                 </Grid>
               ))}
             </Grid>
