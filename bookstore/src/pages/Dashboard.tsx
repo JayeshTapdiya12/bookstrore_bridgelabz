@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useContext, createContext } from "react";
-import { useParams } from "react-router-dom";
+// import { useParams } from "react-router-dom";
 import { getCart as getCartService } from "../service/cartService";
 import { Outlet } from "react-router-dom";
 import Header from "../compoment/Header";
+import Fotter from "../compoment/Fotter";
+import "../style/dashboard.css";
 
 interface Book {
   product_id: {
@@ -40,8 +42,13 @@ const Dashboard: React.FC = () => {
   return (
     <>
       <QuntContext.Provider value={{ cartNumber, refreshCart: cartGet }}>
-        <Header />
-        <Outlet />
+        <div className="dashboard-container">
+          <Header />
+          <main className="main-content">
+            <Outlet />
+          </main>
+          <Fotter />
+        </div>
       </QuntContext.Provider>
     </>
   );
