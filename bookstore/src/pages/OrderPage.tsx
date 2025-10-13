@@ -81,7 +81,7 @@ const OrderPage: React.FC = () => {
                     </p>
 
                     <p>
-                      <strong>Order Total: </strong>${orderItem.orderTotal}
+                      <strong>Order Total: </strong>Rs. {orderItem.orderTotal}
                     </p>
                     <p>
                       <strong>Order datet:</strong>{" "}
