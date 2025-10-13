@@ -1,13 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { getOrder as getOrderService } from "../service/orderService";
 import "../style/orderpage.css";
+import Bookimg from "../assets/Bookimg2.png";
 
 import { Typography, Box, CircularProgress } from "@mui/material";
+
+interface BookId {
+  bookImage: string | null;
+}
 
 interface Book {
   quantity: number;
   _id: string;
-  bookId: string;
+  bookId: BookId;
   bookName: string;
   author: string;
   price: number;
@@ -96,6 +101,17 @@ const OrderPage: React.FC = () => {
                             <h4>
                               {index2 + 1}. BookName: {book.bookName}
                             </h4>
+
+                            <img
+                              src={
+                                book?.bookId?.bookImage
+                                  ? book?.bookId?.bookImage
+                                  : Bookimg
+                              }
+                              style={{ width: "10%", height: "10%" }}
+                              alt="Bookimage"
+                            />
+
                             <p>
                               <strong>Author:</strong> {book.author}
                             </p>

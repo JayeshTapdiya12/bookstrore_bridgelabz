@@ -41,6 +41,10 @@ export const addOrder = async (): Promise<AxiosResponse<AddOrder>> => {
   return res;
 };
 
+interface BookId {
+  bookImage: string | null;
+}
+
 interface GetOrderInterface {
   message: string;
 
@@ -53,7 +57,7 @@ interface GetOrderInterface {
       {
         quantity: number;
         _id: string;
-        bookId: string;
+        bookId: BookId;
         bookName: string;
         author: string;
         price: number;
