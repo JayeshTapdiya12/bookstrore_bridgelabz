@@ -3,7 +3,8 @@ import { getOrder as getOrderService } from "../service/orderService";
 import "../style/orderpage.css";
 import Bookimg from "../assets/Bookimg2.png";
 
-import { Typography, Box, CircularProgress } from "@mui/material";
+import { Typography, Box, CircularProgress, Grid } from "@mui/material";
+import { all } from "axios";
 
 interface BookId {
   bookImage: string | null;
@@ -36,13 +37,42 @@ interface Order {
 const OrderPage: React.FC = () => {
   const [order, setOrder] = useState<Order[] | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const [allOrder, setAllOrder] = useState<Order[] | null>(null);
 
   const getOrder = async () => {
     const res = await getOrderService();
     if (res?.data?.orders && Array.isArray(res?.data?.orders)) {
       setOrder(res?.data?.orders);
+      setAllOrder(res?.data?.orders);
       setLoading(false);
     }
+  };
+
+  const sortting = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const value = event.target.value;
+
+    let sortedBooks: Order[] = [];
+
+    if (Array.isArray(allOrder)) {
+      switch (value) {
+        case "lowPrice":
+          sortedBooks = [...allOrder].sort(
+            (a, b) => a.orderTotal - b.orderTotal
+          );
+          break;
+        case "HighPrice":
+          sortedBooks = [...allOrder].sort(
+            (a, b) => b.orderTotal - a.orderTotal
+          );
+          break;
+
+        case "normal":
+        default:
+          sortedBooks = [...allOrder];
+          break;
+      }
+    }
+    setOrder(sortedBooks);
   };
 
   useEffect(() => {
@@ -62,6 +92,45 @@ const OrderPage: React.FC = () => {
       ) : (
         <>
           <div className="order-container ">
+            <Grid
+              container
+              justifyContent="flex-end"
+              alignItems="center"
+              sx={{ width: "100%", margin: 0 }}
+            >
+              <Grid
+                sx={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                }}
+              >
+                <Box
+                  sx={{
+                    width: "100%",
+                    maxWidth: "200px",
+                  }}
+                >
+                  <select
+                    name="sort"
+                    onChange={sortting}
+                    style={{
+                      width: "100%",
+                      padding: "8px",
+                      borderRadius: "4px",
+                      border: "1px solid #ccc",
+                      fontSize: "14px",
+                      appearance: "auto",
+                      height: "35px",
+                    }}
+                  >
+                    <option value="normal">Sort by relevance</option>
+                    <option value="lowPrice">Price: Low to High</option>
+                    <option value="HighPrice">Price: High to Low</option>
+                  </select>
+                </Box>
+              </Grid>
+            </Grid>
+
             <h4 style={{ color: "grey" }}>
               Home/
               <span style={{ color: "black", fontSize: "15px" }}> (Order)</span>
@@ -89,7 +158,7 @@ const OrderPage: React.FC = () => {
                       <strong>Order Total: </strong>Rs. {orderItem.orderTotal}
                     </p>
                     <p>
-                      <strong>Order datet:</strong>{" "}
+                      <strong>Order date:</strong>{" "}
                       {new Date(orderItem.createdAt).toLocaleString()}
                     </p>
 
