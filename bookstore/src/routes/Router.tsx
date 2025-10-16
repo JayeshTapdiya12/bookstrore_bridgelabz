@@ -10,6 +10,7 @@ import Home from "../pages/Home";
 import Order from "../pages/Order";
 import Wishlist from "../pages/Wishlist";
 import OrderPage from "../pages/OrderPage";
+import AddBook from "../pages/AddBook";
 const Router: React.FC = () => {
   return (
     <>
@@ -36,6 +37,7 @@ const Router: React.FC = () => {
             <Route path="/order" element={<Order />} />
             <Route path="/wishlist" element={<Wishlist />} />
             <Route path="/allorder" element={<OrderPage />} />
+            <Route path="/addbook" element={<AddBook />} />
           </Route>
           <Route
             path="/login"
